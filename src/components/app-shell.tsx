@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   House,
   KeyRound,
@@ -12,6 +12,8 @@ import {
   ShieldCheck,
   Upload,
   Users,
+  Bell,
+  CircleHelp,
   X,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
@@ -58,10 +60,10 @@ function NavLink({
       to={to}
       onClick={onNavigate}
       className={cn(
-        "flex min-h-11 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors",
+        "flex min-h-11 items-center gap-3 rounded-md px-3 text-sm transition-colors",
         active
-          ? "bg-teal text-teal-fg"
-          : "text-sidebar-fg/90 hover:bg-white/10 hover:text-sidebar-fg",
+          ? "bg-[#ecf3ff] text-[#3177f5] font-medium"
+          : "text-sidebar-fg hover:bg-[#f4f7fc] hover:text-[#3177f5]",
       )}
     >
       <Icon className="size-4 shrink-0" strokeWidth={1.75} />
@@ -71,6 +73,8 @@ function NavLink({
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
+  const [globalQuery, setGlobalQuery] = useState("");
   const accessRole = useKb((s) => s.accessRole);
   const setAccessRole = useKb((s) => s.setAccessRole);
   const profile = useKb((s) => s.profile);
@@ -92,14 +96,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [profile.name, profile.dept]);
 
   const nav = (
-    <div className="flex h-full min-h-0 flex-col px-3 py-5">
+    <div className="flex h-full min-h-0 flex-col px-3 py-4">
       <Link to="/" className="flex shrink-0 items-center gap-3 px-2" onClick={() => setOpen(false)}>
-        <span className="grid size-9 place-items-center rounded-md bg-teal font-display text-lg text-teal-fg">
+        <span className="grid size-9 place-items-center rounded-xl bg-teal font-display text-lg text-teal-fg">
           知
         </span>
         <span>
-          <span className="block font-display text-lg leading-none text-sidebar-fg">智识库</span>
-          <span className="mt-1 block text-xs tracking-wide text-sidebar-muted">企业知识 · 可溯源</span>
+          <span className="block font-display text-sm font-semibold leading-none text-ink">智能知识库</span>
         </span>
       </Link>
       <div className="mt-6 flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto">
@@ -119,29 +122,30 @@ export function AppShell({ children }: { children: ReactNode }) {
           <p className="px-3 text-xs leading-5 text-sidebar-muted">当前角色没有后台权限。可在下方切换角色。</p>
         )}
       </div>
-      <div className="mt-4 shrink-0 rounded-lg border border-white/10 p-3">
-        <label className="text-xs text-sidebar-muted" htmlFor="role-switch">
-          当前角色
-        </label>
-        <select
-          id="role-switch"
-          value={accessRole}
-          onChange={(event) => setAccessRole(event.target.value as (typeof ACCESS_ROLES)[number])}
-          className="mt-2 min-h-10 w-full rounded-md bg-white/10 px-2 text-sm text-sidebar-fg"
-        >
-          {ACCESS_ROLES.map((item) => (
-            <option key={item} value={item} className="text-ink">
-              {item}
-            </option>
-          ))}
-        </select>
+      <div className="mt-4 shrink-0 border-t border-line p-3">
+        <button type="button" className="flex w-full items-center gap-3 rounded-md px-1 py-2 text-left hover:bg-[#f4f7fc]" onClick={() => setProfileOpen(true)}>
+          <span className="grid size-8 place-items-center rounded-lg bg-[#ebf3ff] text-[#357bfa]"><Users className="size-4" aria-hidden="true" /></span>
+          <span className="min-w-0">
+            <span className="block truncate text-xs font-semibold text-ink">{accessRole}</span>
+            <span className="block truncate text-xs text-muted">{profile.name}</span>
+          </span>
+        </button>
+        <details className="mt-2 rounded-md px-1 text-xs text-muted">
+          <summary className="cursor-pointer py-1">切换演示角色</summary>
+          <label className="sr-only" htmlFor="role-switch">演示角色</label>
+          <select id="role-switch" value={accessRole}
+            onChange={(event) => setAccessRole(event.target.value as (typeof ACCESS_ROLES)[number])}
+            className="mt-2 min-h-10 w-full rounded-md border border-line bg-card px-2 text-sm text-ink">
+            {ACCESS_ROLES.map((item) => <option key={item} value={item} className="text-ink">{item}</option>)}
+          </select>
+        </details>
       </div>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-paper text-ink">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 bg-sidebar lg:block">{nav}</aside>
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 border-r border-line bg-sidebar lg:block">{nav}</aside>
       {open ? (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button
@@ -154,7 +158,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
       <div className="lg:pl-60">
-        <header className="sticky top-0 z-20 flex min-h-14 items-center gap-3 border-b border-line bg-paper/95 px-4 backdrop-blur">
+        <header className="sticky top-0 z-20 flex min-h-14 items-center gap-3 border-b border-line bg-white px-4 backdrop-blur">
           <button
             type="button"
             className="grid size-11 place-items-center rounded-md border border-line lg:hidden"
@@ -163,15 +167,37 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             {open ? <X className="size-4" /> : <House className="size-4" />}
           </button>
-          <p className="hidden text-sm text-muted sm:block">AI 生成内容仅供参考</p>
+          <form
+            role="search"
+            className="hidden w-80 items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-xs text-muted sm:flex"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void navigate({ to: "/search", search: { q: globalQuery.trim() } });
+            }}
+          >
+            <Search className="size-4 shrink-0" aria-hidden="true" />
+            <input
+              aria-label="全局搜索知识、文档、问答"
+              placeholder="全局搜索知识、文档、问答…"
+              value={globalQuery}
+              onChange={(event) => setGlobalQuery(event.target.value)}
+              className="w-full min-w-0 bg-transparent text-xs text-ink outline-none placeholder:text-muted"
+            />
+          </form>
+          <span className="ml-auto flex items-center gap-3 text-muted">
+            <Bell className="size-4" aria-label="通知" />
+            <CircleHelp className="size-4" aria-label="帮助" />
+            <Settings2 className="size-4" aria-label="设置" />
+          </span>
           <button
+            id="modao-personal-center"
             type="button"
             onClick={() => {
               setName(profile.name);
               setDept(profile.dept);
               setProfileOpen(true);
             }}
-            className="ml-auto min-h-11 rounded-md border border-line px-3 text-sm"
+            className="hidden min-h-11 items-center gap-2 rounded-md px-3 text-sm text-ink sm:flex"
           >
             {profile.name || "个人中心"}
           </button>
@@ -235,7 +261,7 @@ export function PageTitle({
     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
       <div>
         <p className="text-xs tracking-widest text-copper">{kicker}</p>
-        <h1 className="mt-1 font-display text-3xl text-ink">{title}</h1>
+        <h1 className="mt-1 font-display text-2xl font-semibold text-ink">{title}</h1>
       </div>
       {children}
     </div>

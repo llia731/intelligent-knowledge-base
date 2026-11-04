@@ -1,0 +1,51 @@
+/* Visual reconstruction from the rendered Modao V1.0 homepage.
+   Reference: 1920x1080 artboard shown at 52% zoom.
+   This stylesheet deliberately scopes home-only layouts. */
+.modao-home{max-width:1370px;margin:0 auto;color:#202936;font-family:"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.modao-home-heading{margin-bottom:22px}
+.modao-home-heading h1{margin:0;font-size:24px;font-weight:650;line-height:1.4;letter-spacing:0}
+.modao-home-heading p{margin:4px 0 0;color:#8a94a4;font-size:13px}
+.modao-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-bottom:24px}
+.modao-metric{background:white;border:1px solid #e6eaf1;border-radius:11px;min-height:126px;padding:17px 17px 14px}
+.modao-metric-top{display:flex;justify-content:space-between;align-items:center;color:#667287;font-size:12px}
+.modao-metric-top svg{color:#4285fa}
+.modao-metric strong{display:block;margin-top:17px;font-size:26px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+.modao-metric small{display:block;margin-top:4px;color:#8993a3;font-size:11px}
+.modao-panel{background:white;border:1px solid #e6eaf1;border-radius:11px}
+.modao-panel h2{margin:0;font-size:14px;font-weight:650;letter-spacing:0}
+.modao-quick-panel{padding:18px 20px 20px;margin-bottom:25px}
+.modao-actions{margin-top:14px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.modao-action{min-height:105px;border:1px solid #e4e9f1;background:#f8f9fc;border-radius:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:11px;font-size:13px;font-weight:500;color:#263141;transition:background .12s,border-color .12s}
+.modao-action:hover,.modao-action:focus-visible{background:#ecf3ff;border-color:#9fc2ff;outline:none}
+.modao-action-icon{width:39px;height:39px;border-radius:999px;background:#e4efff;color:#3e80fa;display:flex;align-items:center;justify-content:center}
+.modao-lower-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.modao-info-panel{min-height:320px;padding:20px}
+.modao-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:19px}
+.modao-section-header a{color:#3b82f6;font-size:12px;text-decoration:none}
+.modao-section-header a:hover{text-decoration:underline}
+.modao-events{display:flex;flex-direction:column;gap:15px}
+.modao-event{display:flex;gap:12px;align-items:flex-start;min-height:47px}
+.modao-event-icon{width:28px;height:28px;flex:0 0 auto;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#edf4ff;color:#4285fa}
+.modao-event strong,.modao-ranking strong{display:block;font-size:12px;font-weight:600;color:#303c4d;line-height:1.5}
+.modao-event p{margin:1px 0 0;color:#778399;font-size:11px;line-height:1.5;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modao-event small,.modao-ranking small{display:block;color:#99a4b2;font-size:11px;line-height:1.5}
+.modao-ranking{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px}
+.modao-ranking li{min-height:42px;display:flex;align-items:center;gap:12px}
+.modao-rank{display:flex;align-items:center;justify-content:center;flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:#f0f3f7;color:#4d596b;font-size:12px;font-weight:650}
+.modao-ranking li>div{flex:1;min-width:0}
+.modao-ranking strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modao-ranking li>button{border:0;background:transparent;color:#929ba9;padding:9px;border-radius:7px}
+.modao-ranking li>button:hover{background:#eff5ff;color:#3177f5}
+.modao-empty{color:#929ba9;font-size:13px}
+.modao-modal-backdrop{position:fixed;inset:0;background:rgba(20,30,48,.35);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modao-modal{width:min(100%,450px);background:white;border-radius:12px;padding:22px;box-shadow:0 12px 42px rgba(0,0,0,.12)}
+.modao-modal-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modao-modal-title h2{font-size:18px}
+.modao-modal-title button{font-size:24px;color:#6b7484;padding:0 8px}
+.modao-modal label{display:block;margin:12px 0;font-size:13px}
+.modao-modal input,.modao-modal select{display:block;margin-top:7px;width:100%;height:41px;border:1px solid #e0e6ee;border-radius:7px;padding:0 10px;background:white;font-size:13px}
+.modao-modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+.modao-modal-footer button{border:1px solid #e1e6ed;border-radius:7px;padding:9px 18px;font-size:13px}
+.modao-modal-footer button:last-child{background:#347df8;border-color:#347df8;color:white}
+@media(max-width:1100px){.modao-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.modao-actions{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:750px){.modao-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.modao-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.modao-lower-grid{grid-template-columns:1fr}.modao-info-panel{min-height:initial}}
