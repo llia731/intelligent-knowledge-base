@@ -121,21 +121,22 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       </div>
       <div className="mt-4 shrink-0 border-t border-line p-3">
-        <label className="text-xs text-sidebar-muted" htmlFor="role-switch">
-          当前角色
-        </label>
-        <select
-          id="role-switch"
-          value={accessRole}
-          onChange={(event) => setAccessRole(event.target.value as (typeof ACCESS_ROLES)[number])}
-          className="mt-2 min-h-10 w-full rounded-md border border-line bg-card px-2 text-sm text-ink"
-        >
-          {ACCESS_ROLES.map((item) => (
-            <option key={item} value={item} className="text-ink">
-              {item}
-            </option>
-          ))}
-        </select>
+        <button type="button" className="flex w-full items-center gap-3 rounded-md px-1 py-2 text-left hover:bg-[#f4f7fc]" onClick={() => setProfileOpen(true)}>
+          <span className="grid size-8 place-items-center rounded-lg bg-[#ebf3ff] text-[#357bfa]"><Users className="size-4" aria-hidden="true" /></span>
+          <span className="min-w-0">
+            <span className="block truncate text-xs font-semibold text-ink">{accessRole}</span>
+            <span className="block truncate text-xs text-muted">{profile.name}</span>
+          </span>
+        </button>
+        <details className="mt-2 rounded-md px-1 text-xs text-muted">
+          <summary className="cursor-pointer py-1">切换演示角色</summary>
+          <label className="sr-only" htmlFor="role-switch">演示角色</label>
+          <select id="role-switch" value={accessRole}
+            onChange={(event) => setAccessRole(event.target.value as (typeof ACCESS_ROLES)[number])}
+            className="mt-2 min-h-10 w-full rounded-md border border-line bg-card px-2 text-sm text-ink">
+            {ACCESS_ROLES.map((item) => <option key={item} value={item} className="text-ink">{item}</option>)}
+          </select>
+        </details>
       </div>
     </div>
   );
