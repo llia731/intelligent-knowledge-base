@@ -174,6 +174,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Settings2 className="size-4" aria-label="设置" />
           </span>
           <button
+            id="modao-personal-center"
             type="button"
             onClick={() => {
               setName(profile.name);
