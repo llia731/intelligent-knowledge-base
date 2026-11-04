@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   House,
   KeyRound,
@@ -73,6 +73,8 @@ function NavLink({
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
+  const [globalQuery, setGlobalQuery] = useState("");
   const accessRole = useKb((s) => s.accessRole);
   const setAccessRole = useKb((s) => s.setAccessRole);
   const profile = useKb((s) => s.profile);
@@ -165,10 +167,23 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             {open ? <X className="size-4" /> : <House className="size-4" />}
           </button>
-          <Link to="/search" search={{ q: "" }} className="hidden w-80 items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-xs text-muted sm:flex">
-            <Search className="size-4" />
-            全局搜索知识、文档、问答…
-          </Link>
+          <form
+            role="search"
+            className="hidden w-80 items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-xs text-muted sm:flex"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void navigate({ to: "/search", search: { q: globalQuery.trim() } });
+            }}
+          >
+            <Search className="size-4 shrink-0" aria-hidden="true" />
+            <input
+              aria-label="全局搜索知识、文档、问答"
+              placeholder="全局搜索知识、文档、问答…"
+              value={globalQuery}
+              onChange={(event) => setGlobalQuery(event.target.value)}
+              className="w-full min-w-0 bg-transparent text-xs text-ink outline-none placeholder:text-muted"
+            />
+          </form>
           <span className="ml-auto flex items-center gap-3 text-muted">
             <Bell className="size-4" aria-label="通知" />
             <CircleHelp className="size-4" aria-label="帮助" />
