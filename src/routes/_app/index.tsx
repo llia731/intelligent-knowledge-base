@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  BookOpen, Bot, ChartNoAxesCombined, CircleHelp, ClipboardList, Eye,
+  BookOpen, Bot, ChartNoAxesCombined, ClipboardList, Eye,
   FileText, FolderKanban, MessageSquare, Search, ShieldCheck, UploadCloud, UserRound,
 } from "lucide-react";
 import { useKb } from "@/lib/kb/store";
@@ -22,7 +22,6 @@ function HomePage() {
   const searches = useKb((s) => s.searches);
   const asks = useKb((s) => s.asks);
   const addAssistant = useKb((s) => s.addAssistant);
-  const [query, setQuery] = useState("");
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [name, setName] = useState("制度问答助手");
   const [scope, setScope] = useState("全部知识库");
