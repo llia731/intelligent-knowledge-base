@@ -1,13 +1,29 @@
 import { createServerFn } from "@tanstack/react-start";
+import { authMiddleware } from "@/lib/auth/middleware";
 
 type Ctx = { id: string; title: string; excerpt: string };
 
+/** The UI only receives available IDs. Gateway secrets are never returned. */
+export const getChatModels = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .handler(async () => {
+    const { availableChatModels } = await import("./model-catalog.server");
+    return { models: await availableChatModels() };
+  });
+
 export const askKnowledge = createServerFn({ method: "POST" })
-  .validator((input: { question: string; contexts: Ctx[]; strict: boolean; style?: string }) => {
+  .middleware([authMiddleware])
+  .validator((input: { question: string; contexts: Ctx[]; strict: boolean; modelId: string; style?: string }) => {
     const question = String(input?.question ?? "").trim();
     if (question.length < 1 || question.length > 2000) {
       throw new Error("请输入 1–2000 字的问题");
     }
+    const modelId = String(input?.modelId ?? "").trim();
+    if (!modelId || modelId.length > 128) {
+      throw new Error("请选择可用的内网生成模型");
+    }
+    // Temporary prototype contexts: these remain client-provided until the
+    // server-side authorized retrieval service replaces this interface.
     const contexts = (Array.isArray(input?.contexts) ? input.contexts : [])
       .slice(0, 6)
       .map((c) => ({
@@ -16,16 +32,24 @@ export const askKnowledge = createServerFn({ method: "POST" })
         excerpt: String(c?.excerpt ?? "").slice(0, 700),
       }))
       .filter((c) => c.excerpt.length > 0);
-    return { question, contexts, strict: Boolean(input?.strict), style: String(input?.style ?? "").slice(0, 40) };
+    return { question, modelId, contexts, strict: Boolean(input?.strict), style: String(input?.style ?? "").slice(0, 40) };
   })
   .handler(async ({ data }) => {
-    const apiKey = process.env.XAI_API_KEY;
-    if (!apiKey) {
-      return { ok: false as const, error: "当前环境未开启 AI 问答" };
+    const { availableChatModels, modelGatewayConfig } = await import("./model-catalog.server");
+    const models = await availableChatModels();
+    if (!models.some((model) => model.id === data.modelId)) {
+      return { ok: false as const, error: "所选模型当前不可用，请刷新模型列表" };
     }
-    const packed =
-      data.contexts.map((c, i) => `【${i + 1}】《${c.title}》\n${c.excerpt}`).join("\n\n") ||
-      "（没有命中任何已授权资料）";
+    const gateway = modelGatewayConfig();
+    if (!gateway) {
+      return { ok: false as const, error: "内网模型网关尚未配置" };
+    }
+    if (data.contexts.length === 0) {
+      return { ok: false as const, error: "没有已召回的知识片段，无法生成有依据的回答" };
+    }
+    const packed = data.contexts
+      .map((c, i) => `【${i + 1}】《${c.title}》\n${c.excerpt}`)
+      .join("\n\n");
     const system = [
       "你是企业知识库助手「智识」。只用简体中文，并且只根据给定资料回答。",
       "句末用【编号】标注依据，编号对应资料顺序。",
@@ -36,32 +60,37 @@ export const askKnowledge = createServerFn({ method: "POST" })
       data.style ? `回答风格：${data.style}。` : "",
     ].join("");
 
-    const res = await fetch("https://api.x.ai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "grok-4.5",
-        temperature: 0.2,
-        max_tokens: 700,
-        messages: [
-          { role: "system", content: system },
-          {
-            role: "user",
-            content: `资料：\n${packed}\n\n问题：${data.question}`,
-          },
-        ],
-      }),
-    });
-
+    let res: Response;
+    try {
+      res = await fetch(`${gateway.baseUrl}/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${gateway.apiKey}`,
+        },
+        signal: AbortSignal.timeout(120000),
+        body: JSON.stringify({
+          model: data.modelId,
+          temperature: 0.2,
+          max_tokens: 700,
+          messages: [
+            { role: "system", content: system },
+            { role: "user", content: `资料：\n${packed}\n\n问题：${data.question}` },
+          ],
+        }),
+      });
+    } catch {
+      return { ok: false as const, error: "内网模型网关连接失败或请求超时" };
+    }
     if (!res.ok) {
       return { ok: false as const, error: `问答服务暂时不可用（${res.status}）` };
     }
-    const body = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
+    let body: { choices?: { message?: { content?: string } }[] };
+    try {
+      body = (await res.json()) as typeof body;
+    } catch {
+      return { ok: false as const, error: "模型返回格式异常" };
+    }
     const text = body.choices?.[0]?.message?.content?.trim() ?? "";
     if (!text) return { ok: false as const, error: "没有生成回答" };
     return { ok: true as const, text };
