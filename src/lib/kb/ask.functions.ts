@@ -35,6 +35,12 @@ export const askKnowledge = createServerFn({ method: "POST" })
     return { question, modelId, contexts, strict: Boolean(input?.strict), style: String(input?.style ?? "").slice(0, 40) };
   })
   .handler(async ({ data }) => {
+    // The prototype passes evidence from the browser. Until authenticated,
+    // server-side retrieval is implemented, refuse to use this flow against
+    // a configured production database.
+    if (process.env.DATABASE_URL?.trim()) {
+      return { ok: false as const, error: "正式授权检索尚未接入，当前不能在生产环境提交问答" };
+    }
     const { availableChatModels, modelGatewayConfig } = await import("./model-catalog.server");
     const models = await availableChatModels();
     if (!models.some((model) => model.id === data.modelId)) {
