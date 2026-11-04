@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageTitle, Panel } from "@/components/app-shell";
-import { askKnowledge } from "@/lib/kb/ask.functions";
+import { askKnowledge, getChatModels } from "@/lib/kb/ask.functions";
 import { toCitations, useKb } from "@/lib/kb/store";
 import { useCan } from "@/lib/kb/use-can";
 import type { Citation } from "@/lib/kb/types";
@@ -31,6 +31,27 @@ function ChatPage() {
   const [openCite, setOpenCite] = useState<Citation | null>(null);
   const [filter, setFilter] = useState<"all" | "fav">("all");
   const [assistantId, setAssistantId] = useState("");
+  const [modelId, setModelId] = useState("");
+  const [chatModels, setChatModels] = useState<{ id: string; label: string }[]>([]);
+  const [modelStatus, setModelStatus] = useState("正在获取内网模型…");
+
+  useEffect(() => {
+    let active = true;
+    getChatModels()
+      .then(({ models }) => {
+        if (!active) return;
+        setChatModels(models);
+        setModelId((previous) => models.some((model) => model.id === previous) ? previous : models[0]?.id ?? "");
+        setModelStatus(models.length ? "" : "当前没有已配置且被网关列出的生成模型");
+      })
+      .catch(() => {
+        if (!active) return;
+        setChatModels([]);
+        setModelId("");
+        setModelStatus("模型列表获取失败，请检查内网服务");
+      });
+    return () => { active = false; };
+  }, []);
   const assistant = assistants.find((item) => item.id === assistantId) ?? null;
 
   const chat = chats.find((c) => c.id === activeChatId) ?? chats[0];
@@ -41,7 +62,7 @@ function ChatPage() {
 
   async function send() {
     const question = draft.trim();
-    if (!question || busy || !chat) return;
+    if (!question || busy || !chat || !modelId) return;
     setDraft("");
     setBusy(true);
     const started = performance.now();
@@ -66,6 +87,7 @@ function ChatPage() {
       const result = await askKnowledge({
         data: {
           question,
+          modelId,
           strict,
           contexts: citations.map((c) => ({
             id: c.docId,
@@ -131,6 +153,22 @@ function ChatPage() {
                 </option>
               ))}
             </select>
+          </label>
+          <label className="mb-3 block text-xs text-muted">
+            生成模型
+            <select
+              aria-label="选择内网生成模型"
+              value={modelId}
+              onChange={(event) => setModelId(event.target.value)}
+              disabled={busy || chatModels.length === 0}
+              className="mt-1 min-h-10 w-full rounded-md border border-line bg-card px-2 text-sm text-ink disabled:opacity-60"
+            >
+              {chatModels.length === 0 ? <option value="">暂无可用模型</option> : null}
+              {chatModels.map((model) => (
+                <option key={model.id} value={model.id}>{model.label}</option>
+              ))}
+            </select>
+            {modelStatus ? <span role="status" className="mt-1 block text-xs text-copper">{modelStatus}</span> : null}
           </label>
           <div className="mb-2 grid grid-cols-2 gap-1 text-sm">
             <button
@@ -263,7 +301,7 @@ function ChatPage() {
               />
               <button
                 type="submit"
-                disabled={busy || !draft.trim()}
+                disabled={busy || !draft.trim() || !modelId}
                 className="min-h-11 rounded-md bg-teal px-5 text-sm font-medium text-teal-fg disabled:opacity-50"
               >
                 {busy ? "作答中" : "发送"}
