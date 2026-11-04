@@ -42,7 +42,7 @@ function ChatPage() {
         if (!active) return;
         setChatModels(models);
         setModelId((previous) => models.some((model) => model.id === previous) ? previous : models[0]?.id ?? "");
-        setModelStatus(models.length ? "" : "当前没有已启用且可用的内网生成模型");
+        setModelStatus(models.length ? "" : "当前没有已配置且被网关列出的生成模型");
       })
       .catch(() => {
         if (!active) return;
