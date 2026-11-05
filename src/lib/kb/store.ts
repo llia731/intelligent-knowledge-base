@@ -489,7 +489,7 @@ export const useKb = create<KbState>()(
       name: "zhishi-kb-v1",
       skipHydration: true,
       // Raw one-time demo tokens must never be stored in browser localStorage.
-      partialize: ({ freshSecret: _oneTimeSecret, ...rest }) => rest,
+      partialize: (state) => ({ ...state, freshSecret: "" }),
       merge: (persisted, current) => {
         const saved = (persisted ?? {}) as Partial<KbState>;
         return {
