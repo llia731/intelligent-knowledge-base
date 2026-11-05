@@ -62,16 +62,16 @@ function ReviewPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <label className="mr-2 text-xs"><input type="checkbox" checked={picked.includes(item.id)} onChange={() => setPicked((list) => list.includes(item.id) ? list.filter((id) => id !== item.id) : [...list, item.id])} /> 选择</label>
-                  <span className="tag red">待处理</span>
+                  <span className={item.status === "open" ? "tag red" : "tag"}>{item.status === "open" ? "待处理" : item.status === "passed" ? "已通过" : "已拒绝"}</span>
                   <h3 className="mt-2 text-sm font-medium">{item.title}</h3>
-                  <p className="text-xs text-[var(--m-sub)]">{item.reason}</p>
+                  <p className="text-xs text-[var(--m-sub)]">{item.status === "open" ? item.reason : `原审核原因：${item.reason}`}</p>
                 </div>
                 {tab === "待审核" ? (
                   <div className="flex gap-2">
                     <button type="button" className="btn" onClick={() => resolveReview(item.id, true)}>通过</button>
                     <button type="button" className="btn ghost" onClick={() => resolveReview(item.id, false)}>拒绝</button>
                   </div>
-                ) : <span className="tag">{tab}</span>}
+                 ) : null}
               </div>
               <button type="button" className="mt-2 text-xs text-[var(--m-blue)]" onClick={() => setOpenId(openId === item.id ? null : item.id)}>查看原文</button>
               {openId === item.id ? <p className="mt-2 whitespace-pre-wrap text-sm">{doc?.content || "这条反馈没有关联原文。"}</p> : null}
