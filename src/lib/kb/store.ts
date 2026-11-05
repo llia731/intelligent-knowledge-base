@@ -490,6 +490,11 @@ export const useKb = create<KbState>()(
       skipHydration: true,
       // Raw one-time demo tokens must never be stored in browser localStorage.
       partialize: (state) => ({ ...state, freshSecret: "" }),
+      onRehydrateStorage: () => (state, error) => {
+        // Re-write the sanitized state so legacy tokens also leave storage,
+        // rather than only disappearing from the in-memory merged state.
+        if (!error && state) state.dismissSecret();
+      },
       merge: (persisted, current) => {
         const saved = (persisted ?? {}) as Partial<KbState>;
         return {
