@@ -560,6 +560,7 @@ function LibraryPage() {
                 <strong>版本管理</strong>
                 <small>追溯文档历史版本，支持对比与回滚</small>
               </span>
+              <LibraryIcon name="chevron-right" size={20} />
             </button>
           </div>
           <p className="library-boundary">

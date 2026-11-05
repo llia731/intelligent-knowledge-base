@@ -363,7 +363,7 @@
 .library-doc-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   color: #0d1117;
 }
 .library-doc-title > span {
