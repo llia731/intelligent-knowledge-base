@@ -3,7 +3,7 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "智识库";
+const APP_NAME = "智能知识库";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -15,7 +15,7 @@ export const Route = createRootRoute({
         name: "description",
         content: "企业智能知识库：可溯源问答、检索、上传审核与知识配置。",
       },
-      { name: "theme-color", content: "#1c1915" },
+      { name: "theme-color", content: "#f8f9fb" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

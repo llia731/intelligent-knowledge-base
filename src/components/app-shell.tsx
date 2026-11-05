@@ -1,91 +1,74 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
+  Bell,
+  CircleHelp,
   House,
   KeyRound,
   LayoutDashboard,
   Library,
+  Menu,
   MessageSquare,
-  Search,
   ScrollText,
+  Search,
   Settings2,
   Shield,
   ShieldCheck,
   Upload,
   Users,
-  Bell,
-  CircleHelp,
   X,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { ACCESS_ROLES, type AccessRole } from "@/lib/kb/access";
 import { useKb } from "@/lib/kb/store";
-import { ACCESS_ROLES } from "@/lib/kb/access";
 import { useCan } from "@/lib/kb/use-can";
 import { cn } from "@/lib/utils";
 
 const USER_NAV = [
-  { to: "/", label: "首页", icon: House },
-  { to: "/upload", label: "知识上传", icon: Upload },
-  { to: "/search", label: "智能检索", icon: Search },
-  { to: "/ask", label: "AI问答", icon: MessageSquare },
-  { to: "/library", label: "知识管理", icon: Library },
-  { to: "/permissions", label: "权限设置", icon: Shield },
-  { to: "/audit", label: "审计日志", icon: ScrollText },
+  { to: "/", perm: "首页", label: "首页", icon: House },
+  { to: "/upload", perm: "知识上传", label: "知识上传", icon: Upload },
+  { to: "/search", perm: "智能检索", label: "智能检索", icon: Search },
+  { to: "/ask", perm: "AI问答", label: "AI 问答", icon: MessageSquare },
+  { to: "/library", perm: "知识管理", label: "知识管理", icon: Library },
+  { to: "/permissions", perm: "权限设置", label: "权限设置", icon: Shield },
+  { to: "/audit", perm: "审计日志", label: "审计日志", icon: ScrollText },
 ] as const;
 
 const ADMIN_NAV = [
-  { to: "/admin", label: "总览仪表盘", icon: LayoutDashboard },
-  { to: "/admin/users", label: "用户管理", icon: Users },
-  { to: "/admin/roles", label: "角色权限", icon: ShieldCheck },
-  { to: "/admin/config", label: "知识库配置", icon: Settings2 },
-  { to: "/admin/review", label: "内容审核", icon: Shield },
-  { to: "/admin/logs", label: "系统日志", icon: ScrollText },
-  { to: "/admin/keys", label: "API密钥", icon: KeyRound },
+  { to: "/admin", perm: "总览仪表盘", label: "总览仪表盘", icon: LayoutDashboard },
+  { to: "/admin/users", perm: "用户管理", label: "用户管理", icon: Users },
+  { to: "/admin/roles", perm: "角色权限", label: "角色权限", icon: ShieldCheck },
+  { to: "/admin/config", perm: "知识库配置", label: "知识库配置", icon: Settings2 },
+  { to: "/admin/review", perm: "内容审核", label: "内容审核", icon: Shield },
+  { to: "/admin/logs", perm: "系统日志", label: "系统日志", icon: ScrollText },
+  { to: "/admin/keys", perm: "API密钥", label: "API 密钥", icon: KeyRound },
 ] as const;
 
-function NavLink({
-  to,
-  label,
-  icon: Icon,
-  onNavigate,
-}: {
-  to: string;
-  label: string;
-  icon: typeof Search;
-  onNavigate?: () => void;
-}) {
-  const path = useRouterState({ select: (s) => s.location.pathname });
-  const active = path === to;
+function Logo() {
   return (
-    <Link
-      to={to}
-      onClick={onNavigate}
-      className={cn(
-        "flex min-h-11 items-center gap-3 rounded-md px-3 text-sm transition-colors",
-        active
-          ? "bg-[#ecf3ff] text-[#3177f5] font-medium"
-          : "text-sidebar-fg hover:bg-[#f4f7fc] hover:text-[#3177f5]",
-      )}
-    >
-      <Icon className="size-4 shrink-0" strokeWidth={1.75} />
-      {label}
-    </Link>
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+      <path d="M4 13.5V4.8L9 3l5 1.8V13.5L9 15.2 4 13.5Z" fill="none" stroke="#fff" strokeWidth="1.4" />
+      <path d="M9 3.2v12" stroke="#fff" strokeWidth="1.4" />
+    </svg>
   );
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
+  const path = useRouterState({ select: (s) => s.location.pathname });
+  const adminMode = path === "/admin" || path.startsWith("/admin/");
   const [globalQuery, setGlobalQuery] = useState("");
   const accessRole = useKb((s) => s.accessRole);
   const setAccessRole = useKb((s) => s.setAccessRole);
   const profile = useKb((s) => s.profile);
   const saveProfile = useKb((s) => s.saveProfile);
+  const logs = useKb((s) => s.logs);
   const can = useCan();
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [bell, setBell] = useState(false);
+  const [help, setHelp] = useState(false);
   const [name, setName] = useState(profile.name);
   const [dept, setDept] = useState(profile.dept);
-  const userNav = USER_NAV.filter((item) => can(item.label));
-  const adminNav = ADMIN_NAV.filter((item) => can(item.label));
 
   useEffect(() => {
     void useKb.persist.rehydrate();
@@ -95,140 +78,188 @@ export function AppShell({ children }: { children: ReactNode }) {
     setDept(profile.dept);
   }, [profile.name, profile.dept]);
 
+  const items = (adminMode ? ADMIN_NAV : USER_NAV).filter((item) => can(item.perm));
+  const canAdmin = ADMIN_NAV.some((item) => can(item.perm));
+
   const nav = (
-    <div className="flex h-full min-h-0 flex-col px-3 py-4">
-      <Link to="/" className="flex shrink-0 items-center gap-3 px-2" onClick={() => setOpen(false)}>
-        <span className="grid size-9 place-items-center rounded-xl bg-teal font-display text-lg text-teal-fg">
-          知
-        </span>
+    <>
+      <Link to={adminMode ? "/admin" : "/"} className="brand" onClick={() => setOpen(false)}>
+        <span className="logo-mark"><Logo /></span>
         <span>
-          <span className="block font-display text-sm font-semibold leading-none text-ink">智能知识库</span>
+          <b>{adminMode ? "智识库后台" : "智能知识库"}</b>
+          {adminMode ? <small>AI 知识库管理系统</small> : null}
         </span>
       </Link>
-      <div className="mt-6 flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto">
-        <nav className="flex flex-col gap-1">
-          {userNav.map((item) => (
-            <NavLink key={item.to} {...item} onNavigate={() => setOpen(false)} />
-          ))}
-        </nav>
-        {adminNav.length > 0 ? (
-          <div className="flex flex-col gap-1">
-            <p className="px-3 pb-1 text-xs tracking-wide text-sidebar-muted">后台</p>
-            {adminNav.map((item) => (
-              <NavLink key={item.to} {...item} onNavigate={() => setOpen(false)} />
-            ))}
-          </div>
-        ) : (
-          <p className="px-3 text-xs leading-5 text-sidebar-muted">当前角色没有后台权限。可在下方切换角色。</p>
-        )}
-      </div>
-      <div className="mt-4 shrink-0 border-t border-line p-3">
-        <button type="button" className="flex w-full items-center gap-3 rounded-md px-1 py-2 text-left hover:bg-[#f4f7fc]" onClick={() => setProfileOpen(true)}>
-          <span className="grid size-8 place-items-center rounded-lg bg-[#ebf3ff] text-[#357bfa]"><Users className="size-4" aria-hidden="true" /></span>
-          <span className="min-w-0">
-            <span className="block truncate text-xs font-semibold text-ink">{accessRole}</span>
-            <span className="block truncate text-xs text-muted">{profile.name}</span>
+      <nav>
+        {items.map((item) => {
+          const active = item.to === "/admin" ? path === "/admin" : path === item.to;
+          const Icon = item.icon;
+          return (
+            <Link key={item.to} to={item.to} onClick={() => setOpen(false)} className={cn("nav-link", active && "active")}>
+              <Icon />
+              {item.label}
+            </Link>
+          );
+        })}
+        {!adminMode && canAdmin ? (
+          <Link to="/admin" className="nav-link" onClick={() => setOpen(false)} style={{ marginTop: 8, color: "var(--m-blue)" }}>
+            <LayoutDashboard />
+            进入后台
+          </Link>
+        ) : null}
+        {adminMode ? (
+          <Link to="/" className="nav-link" onClick={() => setOpen(false)} style={{ marginTop: 8 }}>
+            <House />
+            返回用户端
+          </Link>
+        ) : null}
+      </nav>
+      <div className="side-foot">
+        <button
+          id="modao-personal-center"
+          type="button"
+          className="who"
+          onClick={() => {
+            setName(profile.name);
+            setDept(profile.dept);
+            setProfileOpen(true);
+            setOpen(false);
+          }}
+        >
+          <span className="avatar">{accessRole.slice(0, 1)}</span>
+          <span>
+            <strong>{accessRole}</strong>
+            <span>admin@example.com</span>
           </span>
         </button>
-        <details className="mt-2 rounded-md px-1 text-xs text-muted">
-          <summary className="cursor-pointer py-1">切换演示角色</summary>
-          <label className="sr-only" htmlFor="role-switch">演示角色</label>
-          <select id="role-switch" value={accessRole}
-            onChange={(event) => setAccessRole(event.target.value as (typeof ACCESS_ROLES)[number])}
-            className="mt-2 min-h-10 w-full rounded-md border border-line bg-card px-2 text-sm text-ink">
-            {ACCESS_ROLES.map((item) => <option key={item} value={item} className="text-ink">{item}</option>)}
-          </select>
-        </details>
       </div>
-    </div>
+    </>
   );
 
   return (
-    <div className="min-h-screen bg-paper text-ink">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 border-r border-line bg-sidebar lg:block">{nav}</aside>
+    <div className="shell">
+      <aside className="side">{nav}</aside>
       {open ? (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            type="button"
-            aria-label="关闭菜单"
-            className="absolute inset-0 bg-ink/40"
-            onClick={() => setOpen(false)}
-          />
-          <aside className="relative h-full w-72 max-w-[85vw] bg-sidebar">{nav}</aside>
+        <div className="mobile-scrim lg:hidden">
+          <button type="button" aria-label="关闭菜单" className="absolute inset-0" onClick={() => setOpen(false)} />
+          <aside className="mobile-side">{nav}</aside>
         </div>
       ) : null}
-      <div className="lg:pl-60">
-        <header className="sticky top-0 z-20 flex min-h-14 items-center gap-3 border-b border-line bg-white px-4 backdrop-blur">
-          <button
-            type="button"
-            className="grid size-11 place-items-center rounded-md border border-line lg:hidden"
-            aria-label="打开菜单"
-            onClick={() => setOpen(true)}
-          >
-            {open ? <X className="size-4" /> : <House className="size-4" />}
+      <div className="main-col">
+        <header className="topbar">
+          <button type="button" className="menu-btn" aria-label="打开菜单" onClick={() => setOpen(true)}>
+            {open ? <X size={16} /> : <Menu size={16} />}
           </button>
           <form
             role="search"
-            className="hidden w-80 items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-xs text-muted sm:flex"
+            className="search-form"
             onSubmit={(event) => {
               event.preventDefault();
-              void navigate({ to: "/search", search: { q: globalQuery.trim() } });
+              const q = globalQuery.trim();
+              if (adminMode) {
+                void navigate({ to: "/admin/users" });
+                return;
+              }
+              void navigate({ to: "/search", search: { q } });
             }}
           >
-            <Search className="size-4 shrink-0" aria-hidden="true" />
+            <Search size={16} />
             <input
-              aria-label="全局搜索知识、文档、问答"
-              placeholder="全局搜索知识、文档、问答…"
+              aria-label={adminMode ? "搜索用户、知识库、日志、API 密钥" : "全局搜索知识、文档、问答"}
+              placeholder={adminMode ? "搜索用户、知识库、日志、API 密钥…" : "全局搜索知识、文档、问答…"}
               value={globalQuery}
               onChange={(event) => setGlobalQuery(event.target.value)}
-              className="w-full min-w-0 bg-transparent text-xs text-ink outline-none placeholder:text-muted"
             />
           </form>
-          <span className="ml-auto flex items-center gap-3 text-muted">
-            <Bell className="size-4" aria-label="通知" />
-            <CircleHelp className="size-4" aria-label="帮助" />
-            <Settings2 className="size-4" aria-label="设置" />
+          <span className="ml-auto flex items-center gap-1 relative">
+            <button type="button" className="icon-btn" aria-label="通知" onClick={() => { setBell((v) => !v); setHelp(false); }}>
+              <Bell size={18} />
+            </button>
+            <button type="button" className="icon-btn" aria-label="帮助" onClick={() => { setHelp(true); setBell(false); }}>
+              <CircleHelp size={18} />
+            </button>
+            <button
+              type="button"
+              className="icon-btn"
+              aria-label="设置"
+              onClick={() => void navigate({ to: can("知识库配置") ? "/admin/config" : "/" })}
+            >
+              <Settings2 size={18} />
+            </button>
+            {bell ? (
+              <div className="pop">
+                <p className="px-2 py-1 text-xs text-[var(--m-faint)]">最近动态（本地记录，不是推送服务）</p>
+                {logs.slice(0, 6).map((item) => (
+                  <button key={item.id} type="button" onClick={() => { setBell(false); void navigate({ to: "/audit" }); }}>
+                    <b className="font-medium">{item.action}</b>
+                    <span className="block text-xs text-[var(--m-sub)]">{item.actor} · {item.target}</span>
+                  </button>
+                ))}
+                {logs.length === 0 ? <p className="px-2 py-2 text-sm">暂无记录</p> : null}
+              </div>
+            ) : null}
           </span>
-          <button
-            id="modao-personal-center"
-            type="button"
-            onClick={() => {
-              setName(profile.name);
-              setDept(profile.dept);
-              setProfileOpen(true);
-            }}
-            className="hidden min-h-11 items-center gap-2 rounded-md px-3 text-sm text-ink sm:flex"
-          >
-            {profile.name || "个人中心"}
-          </button>
         </header>
-        <main className="px-4 py-6 sm:px-6 lg:px-8">{children}</main>
+        <main className="stage">
+          <div className="stage-inner">{children}</div>
+        </main>
       </div>
+
+      {help ? (
+        <div className="overlay" onClick={() => setHelp(false)}>
+          <div className="modal" onClick={(event) => event.stopPropagation()}>
+            <h2 className="text-lg font-semibold">使用说明</h2>
+            <p className="page-sub">这是按墨刀 V1.0 复刻的产品界面。检索、上传、权限和审核会写入本地演示数据；模型列表只来自服务端目录，未配置时不能发送。</p>
+            <ul className="mt-3 space-y-1 text-sm text-[var(--m-sub)]">
+              <li>顶部搜索进入智能检索。</li>
+              <li>左下角头像打开个人中心，可切换演示角色。</li>
+              <li>后台与用户端侧栏分开，有权限时可从底部进入。</li>
+            </ul>
+            <button type="button" className="btn mt-4" onClick={() => setHelp(false)}>知道了</button>
+          </div>
+        </div>
+      ) : null}
+
       {profileOpen ? (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          <button type="button" aria-label="关闭个人中心" className="absolute inset-0 bg-ink/40" onClick={() => setProfileOpen(false)} />
-          <aside className="relative z-10 h-full w-full max-w-md overflow-auto bg-card p-6">
-            <p className="text-xs tracking-widest text-copper">当前身份</p>
-            <h2 className="mt-1 font-display text-3xl">个人中心</h2>
-            <p className="mt-2 text-sm text-muted">显示名称会出现在审计日志里。当前角色：{accessRole}。</p>
-            <label className="mt-5 block text-sm">
+        <div className="drawer-scrim">
+          <button type="button" aria-label="关闭个人中心" className="absolute inset-0" onClick={() => setProfileOpen(false)} />
+          <aside className="drawer">
+            <p className="text-xs text-[var(--m-blue)]">当前身份</p>
+            <h2 className="mt-1 text-2xl font-semibold">个人中心</h2>
+            <p className="page-sub">显示名称会出现在审计记录里。当前角色：{accessRole}。</p>
+            <label className="mt-4 block text-sm">
               显示名称
-              <input value={name} onChange={(event) => setName(event.target.value)} className="mt-1 min-h-11 w-full rounded-md border border-line px-3" />
+              <input className="field mt-1" value={name} onChange={(event) => setName(event.target.value)} />
             </label>
             <label className="mt-3 block text-sm">
               所属部门
-              <input value={dept} onChange={(event) => setDept(event.target.value)} className="mt-1 min-h-11 w-full rounded-md border border-line px-3" />
+              <input className="field mt-1" value={dept} onChange={(event) => setDept(event.target.value)} />
             </label>
-            <button
-              type="button"
-              onClick={() => {
-                saveProfile({ name: name.trim() || "当前用户", dept: dept.trim() || "未分配" });
-                setProfileOpen(false);
-              }}
-              className="mt-6 min-h-11 rounded-md bg-ink px-4 text-sm text-paper"
-            >
-              保存
-            </button>
+            <label className="mt-3 block text-sm">
+              演示角色
+              <select
+                id="role-switch"
+                className="select mt-1"
+                value={accessRole}
+                onChange={(event) => setAccessRole(event.target.value as AccessRole)}
+              >
+                {ACCESS_ROLES.map((item) => <option key={item} value={item}>{item}</option>)}
+              </select>
+            </label>
+            <p className="note mt-2">角色切换只影响本机演示权限，不会取代服务端鉴权。</p>
+            <div className="mt-5 flex gap-2">
+              <button
+                type="button"
+                className="btn"
+                onClick={() => {
+                  saveProfile({ name: name.trim() || "当前用户", dept: dept.trim() || "未分配" });
+                  setProfileOpen(false);
+                }}
+              >
+                保存
+              </button>
+              <button type="button" className="btn ghost" onClick={() => setProfileOpen(false)}>取消</button>
+            </div>
           </aside>
         </div>
       ) : null}
@@ -240,9 +271,9 @@ export function NeedPerm({ perm, children }: { perm: string; children: ReactNode
   const can = useCan();
   if (!can(perm)) {
     return (
-      <Panel className="p-6 text-sm leading-6">
-        当前角色没有「{perm}」权限。左下角可以切换角色；系统管理员也可以在角色权限里调整。
-      </Panel>
+      <section className="card p-6 text-sm leading-6">
+        当前角色没有「{perm}」权限。打开左下角个人中心可以切换演示角色；系统管理员也可以在角色权限里调整「查看」开关。
+      </section>
     );
   }
   return <>{children}</>;
@@ -253,15 +284,15 @@ export function PageTitle({
   title,
   children,
 }: {
-  kicker: string;
+  kicker?: string;
   title: string;
   children?: ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div className="head-row">
       <div>
-        <p className="text-xs tracking-widest text-copper">{kicker}</p>
-        <h1 className="mt-1 font-display text-2xl font-semibold text-ink">{title}</h1>
+        {kicker ? <p className="text-xs text-[var(--m-blue)]">{kicker}</p> : null}
+        <h1 className="page-h">{title}</h1>
       </div>
       {children}
     </div>
@@ -269,7 +300,5 @@ export function PageTitle({
 }
 
 export function Panel({ className, children }: { className?: string; children: ReactNode }) {
-  return (
-    <section className={cn("rounded-lg border border-line bg-card", className)}>{children}</section>
-  );
+  return <section className={cn("card", className)}>{children}</section>;
 }

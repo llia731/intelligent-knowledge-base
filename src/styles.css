@@ -1,22 +1,23 @@
-@import "tailwindcss";\n@import "./modao-home.css";
+@import "tailwindcss";
+@import "./modao.css";
 
 @theme {
-  --font-sans: "Noto Sans SC", "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
-  --color-paper: #f7f8fa;
+  --font-sans: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f8f9fb;
   --color-card: #ffffff;
-  --color-ink: #202936;
-  --color-muted: #8994a5;
-  --color-line: #e8ecf2;
-  --color-teal: #357bfa;
+  --color-ink: #0d1117;
+  --color-muted: #4a5568;
+  --color-line: #e2e6ec;
+  --color-teal: #1d6cff;
   --color-teal-fg: #ffffff;
-  --color-copper: #357bfa;
+  --color-copper: #1d6cff;
   --color-sidebar: #ffffff;
-  --color-sidebar-fg: #414f62;
-  --color-sidebar-muted: #8994a5;
-  --color-ok: #16835e;
-  --color-ok-bg: #e6f8ef;
-  --color-warn-bg: #fff2e5;
+  --color-sidebar-fg: #4a5568;
+  --color-sidebar-muted: #8b97a8;
+  --color-ok: #16a34a;
+  --color-ok-bg: #e8f8ef;
+  --color-warn-bg: #fff4e8;
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -43,6 +44,11 @@
   }
   p {
     text-wrap: pretty;
+  }
+  input,
+  textarea,
+  select {
+    font: inherit;
   }
 }
 
