@@ -146,6 +146,7 @@ function SearchPage() {
   const [message, setMessage] = useState("");
   const [activeDoc, setActiveDoc] = useState<KbDoc | null>(null);
   const opener = useRef<HTMLElement | null>(null);
+  const executedDomain = useRef(Boolean(initial));
   const access = useMemo(() => ({ accessRole, acl, grants }), [accessRole, acl, grants]);
   const availableDocs = useMemo(
     () => docs.filter((d) => d.status === "indexed" && canReadDoc(d, access)),
@@ -157,6 +158,12 @@ function SearchPage() {
   const scopeNames = executed ? localScopes : SAMPLE_SCOPES;
   const categoryNames = [...new Set(availableDocs.flatMap(localCategories))];
   useEffect(() => {
+    const incomingDomain = Boolean(initial);
+    if (executedDomain.current !== incomingDomain) {
+      setFilters(emptyFilters());
+      setTag("");
+    }
+    executedDomain.current = incomingDomain;
     setQuery(initial);
     setSubmitted(initial);
     setExecuted(Boolean(initial));
@@ -262,6 +269,7 @@ function SearchPage() {
     }
     setSubmitted(q);
     setExecuted(true);
+    executedDomain.current = true;
     setPage(1);
     if (
       !q ||

@@ -397,6 +397,21 @@ try {
     assert.equal(await p.getByRole("button", { name: "上一页", exact: true }).isDisabled(), true);
     assert.equal(await total(p), 9);
     await shot("url-page-one");
+    // Crossing from design examples to local results must clear example-only filters.
+    await go("/search");
+    const exampleTag = p.getByRole("button", { name: "LLM", exact: true });
+    await exampleTag.click();
+    assert.equal(await exampleTag.getAttribute("aria-pressed"), "true");
+    await p.getByRole("search").locator("input").fill("SearchBoundary");
+    await p.getByRole("search").locator("input").press("Enter");
+    await p.waitForURL(/q=SearchBoundary/);
+    await p.waitForFunction(
+      () => document.querySelector('input[aria-label="检索关键词"]').value === "SearchBoundary",
+    );
+    assert.equal(await exampleTag.getAttribute("aria-pressed"), "false");
+    assert.equal(await exampleTag.isDisabled(), true);
+    assert.equal(await total(p), 9);
+    await shot("url-domain-clean");
   });
   await run("empty-query-and-responsive", async ({ p, r, go, shot, state }) => {
     await go("/search");
