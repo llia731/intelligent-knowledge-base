@@ -1,0 +1,23 @@
+/* Knowledge management layout pass based on the Modao V1 visual audit.
+ * Scoped to /library; do not change global cards or V15 dialogs.
+ * Exact pixel signoff still requires Cloud screenshot comparison.
+ */
+.library-layout { align-items:start; }
+.library-sidebar { min-width:0; }
+.library-sidebar button { text-align:left; }
+.library-collections { min-height:266px; }
+.library-cover-card { overflow:hidden; border:1px solid #e2e6ec; border-radius:12px; background:#fff; min-width:0; }
+.library-cover { height:90px; display:flex; justify-content:center; align-items:center; color:white; }
+.library-cover-card[data-tone="blue"] .library-cover { background:linear-gradient(135deg,#3b82f6,#2563eb); }
+.library-cover-card[data-tone="purple"] .library-cover { background:linear-gradient(135deg,#a78bfa,#7c3aed); }
+.library-cover-card[data-tone="green"] .library-cover { background:linear-gradient(135deg,#4ade80,#16a34a); }
+.library-cover-body { padding:12px; display:grid; gap:8px; }
+.library-cover-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.library-cover-heading h3 { font-size:14px; font-weight:600; min-width:0; }
+.library-cover-heading .tag { flex:none; font-size:11px; padding:0 6px; }
+.library-cover-body p { color:#4a5568; font-size:12px; line-height:1.45; min-height:35px; }
+.library-cover-meta { color:#64748b; font-size:12px; }
+.library-documents { min-width:0; }
+@media (max-width:1279px) {
+  .library-collections { min-height:0; }
+}
