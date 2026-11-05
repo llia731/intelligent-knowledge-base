@@ -1,0 +1,8 @@
+/* Search layout: use original full-width query/syntax card, not the filter sidebar. */
+.search-intro { min-width:0; }
+.search-intro .search-form { max-width:none; }
+.search-syntax { display:flex; gap:16px; align-items:center; border-top:1px solid var(--m-line); padding-top:14px; }
+.search-syntax>strong { white-space:nowrap; font-weight:600; color:var(--m-ink); }
+.search-syntax-tags { display:flex; flex-wrap:wrap; gap:8px; min-width:0; }
+.search-syntax-tags .chip { font-size:12px; }
+@media (max-width:767px) { .search-syntax { align-items:flex-start; flex-direction:column; gap:8px; } }
