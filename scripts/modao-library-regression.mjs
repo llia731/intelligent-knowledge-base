@@ -94,6 +94,41 @@ async function installFixture(p) {
   await p.reload({ waitUntil: "networkidle" });
 }
 try {
+  await run("ssr-hydration-gate", async ({ p, r, shot }) => {
+    let release;
+    const gate = new Promise((resolve) => {
+      release = resolve;
+    });
+    let delayed = 0;
+    await p.route(/\/src\/.*\.(tsx?|jsx?)(\?.*)?$/, async (route) => {
+      delayed++;
+      await gate;
+      await route.continue();
+    });
+    try {
+      await p.goto(new URL("/library", base).href, { waitUntil: "commit" });
+      await p.locator(".library-page[disabled]").waitFor();
+      const trigger = p
+        .locator("tbody tr")
+        .first()
+        .getByRole("button", { name: "分享", exact: true });
+      assert.equal(
+        await trigger.isDisabled(),
+        true,
+        "SSR controls remain disabled before client initialization",
+      );
+      await shot("before-hydration-disabled");
+      release();
+      await p.locator(".library-page:not([disabled])").waitFor({ timeout: 30000 });
+      assert.ok(delayed > 0, "Actual application JavaScript was deliberately held back");
+      await trigger.click();
+      await p.getByRole("dialog", { name: "分享文档", exact: true }).waitFor();
+      await shot("first-click-after-hydration");
+      r.observations.delayedScriptRequests = delayed;
+    } finally {
+      release();
+    }
+  });
   await run("source-layout", async ({ p, r, go, shot }) => {
     await go("/library");
     const selectors = {
