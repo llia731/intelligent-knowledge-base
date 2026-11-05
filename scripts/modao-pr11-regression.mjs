@@ -23,6 +23,7 @@ async function run(id, fn) {
   await c.tracing.start({ screenshots: true, snapshots: true });
   const p = await c.newPage();
   p.setDefaultTimeout(7000);
+  p.setDefaultNavigationTimeout(30000);
   const r = {
     id,
     steps: [],
