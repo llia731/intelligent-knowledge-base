@@ -250,6 +250,14 @@ export function ShareDocumentDialog({
           <footer className="sd-footer">
             <button
               type="button"
+              className="sd-neutral sd-save-summary"
+              onClick={saveSummary}
+              disabled={!liveDoc}
+            >
+              {savedNote ? <Check size={16} /> : null} 保存推荐摘要
+            </button>
+            <button
+              type="button"
               className="sd-neutral"
               onClick={() => {
                 setPassword("");
@@ -257,14 +265,6 @@ export function ShareDocumentDialog({
               }}
             >
               取消
-            </button>
-            <button
-              type="button"
-              className="sd-neutral sd-save-summary"
-              onClick={saveSummary}
-              disabled={!liveDoc}
-            >
-              {savedNote ? <Check size={16} /> : null} 保存推荐摘要
             </button>
             <button type="button" className="sd-primary" disabled title={noShareService}>
               确认分享

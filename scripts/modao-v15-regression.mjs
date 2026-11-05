@@ -329,6 +329,22 @@ try {
       await p.keyboard.press("Shift+Tab");
       assert.equal(await dialog.evaluate((e) => e.contains(document.activeElement)), true);
     }
+    await p.getByLabel("推荐摘要", { exact: true }).focus();
+    await p.keyboard.press("Tab");
+    assert.equal(
+      await p
+        .getByRole("button", { name: "保存推荐摘要", exact: true })
+        .evaluate((e) => e === document.activeElement),
+      true,
+      "Footer Tab order follows left-to-right visual order",
+    );
+    await p.keyboard.press("Tab");
+    assert.equal(
+      await p
+        .getByRole("button", { name: "取消", exact: true })
+        .evaluate((e) => e === document.activeElement),
+      true,
+    );
     await p.getByRole("radio", { name: /全员/ }).focus();
     await p.keyboard.press("ArrowRight");
     assert.equal(await p.getByRole("radio", { name: /指定部门/ }).isChecked(), true);
