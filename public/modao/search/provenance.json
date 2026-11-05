@@ -1,0 +1,266 @@
+{
+  "prototypeZipSha256": "8c585bc0e158a22603410dc2578bf6fe9b6e6207285b124dd4eaf45c0646603b",
+  "captureGeometrySha256": "75f4a7f089922e774cf78406b8b13ded3ca0a97025caa697d466987c0b4420f9",
+  "assets": [
+    {
+      "file": "semantic.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2zqVfQ9u",
+      "rect": {
+        "x": 480,
+        "y": 199,
+        "width": 16,
+        "height": 16,
+        "top": 199,
+        "right": 496,
+        "bottom": 215,
+        "left": 480
+      },
+      "sourceSvgSha256": "f688c33d58d6b5de6d0a9a463d6077c3d29ac473c8a3c7abf17591da2072f26d",
+      "sha256": "02bab110cf35ca0668a3a175db25932d134b7c0e38357e0ee36b0906bd8b2bb4",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "4b6bd5edb9918e1cc13e65f44fe4b2f517901e378395873569ab72237873df85",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "keyword.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2OGYJafv",
+      "rect": {
+        "x": 596,
+        "y": 199,
+        "width": 16,
+        "height": 16,
+        "top": 199,
+        "right": 612,
+        "bottom": 215,
+        "left": 596
+      },
+      "sourceSvgSha256": "9f921c9a97cfbce5362f91cb7c88bc9c7c7838b056f7cae36c996684049c7377",
+      "sha256": "afea9cdba7094605f3f42c706ca6ee569d6da4a9e1b0c44c656bec32eff24083",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "3b6d6945206ecee759d997b666d06389b73f46bc6ccd73cebc99c4b598ed8bbd",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "hybrid.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2UCo2hhe",
+      "rect": {
+        "x": 726,
+        "y": 199,
+        "width": 16,
+        "height": 16,
+        "top": 199,
+        "right": 742,
+        "bottom": 215,
+        "left": 726
+      },
+      "sourceSvgSha256": "a1d92e6d570596f2d5261b7b1f81b7778bcdad42a7176ee9c8b4e838bc6d3d75",
+      "sha256": "4ea585c34d4c18765595278f6ca3bf65f5899ac35a5825181186fa636ffef7b6",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "401a89a3b7a9fd46c66d969da094483acf764395cff644692d600af305283b6f",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "search.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wbVVH2B2CEMN0JHM/wicVUbx8VVGsaz2173D66h",
+      "rect": {
+        "x": 482,
+        "y": 259,
+        "width": 20,
+        "height": 20,
+        "top": 259,
+        "right": 502,
+        "bottom": 279,
+        "left": 482
+      },
+      "sourceSvgSha256": "8a3a1af5818dca6acaadf8feae36303d558d37aa8f7cf8a784301d365b146021",
+      "sha256": "7dd8c320ffb63ae7ead3e6841e458bc7c94528597423666b68c4fc6e82b9fd35",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "0d2efc6579a134ed40c347c03b525026272e5a5064290ec0f9f067c5715eec12",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "syntax.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2GGd8Zn",
+      "rect": {
+        "x": 479,
+        "y": 368,
+        "width": 16,
+        "height": 16,
+        "top": 368,
+        "right": 495,
+        "bottom": 384,
+        "left": 479
+      },
+      "sourceSvgSha256": "fa0b36b2c27e0554ab94c38615fa6f1758b74714ed1ccdf107c55c33fcfc5db3",
+      "sha256": "bb204e275a3137d93d154aa58740427df6605e2ad0b1caee0dd425cd59125bac",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "c9698fb2e07c21c2c1d99848ae6ecda339b888b7e30884f36807875f3561a836",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "relevance.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2YyeaAKe",
+      "rect": {
+        "x": 1651.0625,
+        "y": 556,
+        "width": 14,
+        "height": 14,
+        "top": 556,
+        "right": 1665.0625,
+        "bottom": 570,
+        "left": 1651.0625
+      },
+      "sourceSvgSha256": "aabb5878aa18a11cfa800fd6b188f5b715263ea2682517b8828548214ce2cb95",
+      "sha256": "724f087f925ef750bc097919d921f21ddb1ec4d3f6ec76e8db5664753e1076b5",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "3c67c1b456e5152ca774b1bb6b34319ae833e01d12d24cc5cc0af13ba7b5554d",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "like.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wrVUbx81VVGsaz2f4KEOj5",
+      "rect": {
+        "x": 1649.96875,
+        "y": 589,
+        "width": 16,
+        "height": 16,
+        "top": 589,
+        "right": 1665.96875,
+        "bottom": 605,
+        "left": 1649.96875
+      },
+      "sourceSvgSha256": "1ab1d3b00938cce480f48615bd0c959e2bd37d21cfc3463ea7102aad7d442605",
+      "sha256": "b81455d8567a37447c39b3867a4fa431b5ec0426d38c18f04978b4111447e302",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "83ab826e85e768df6728149d1c8d8642399ec7c7493b41a70fba6eb34775cfb3",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "dislike.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wrVUbx81VVGsaz2Ncph8DF",
+      "rect": {
+        "x": 1681.96875,
+        "y": 589,
+        "width": 16,
+        "height": 16,
+        "top": 589,
+        "right": 1697.96875,
+        "bottom": 605,
+        "left": 1681.96875
+      },
+      "sourceSvgSha256": "757af75d59429bcd8ba3992d89be49182ff30d9154ec84231064149c0296f0d8",
+      "sha256": "9805959b0ab8f25c2f5c94894b82dacc819d4ba48efc6af27b020d8dd7c05d5c",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "1e7f20f4f9865994c6c6bb5c123e8d59a3f409735d32f1bf14d3c955587a381a",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "knowledge.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2q7zIpTu",
+      "rect": {
+        "x": 745.96875,
+        "y": 643.5,
+        "width": 14,
+        "height": 14,
+        "top": 643.5,
+        "right": 759.96875,
+        "bottom": 657.5,
+        "left": 745.96875
+      },
+      "sourceSvgSha256": "28ba07b452b85567e103cc59be2b47246ebcde143a6564ff1d4330448464091d",
+      "sha256": "d813366940e97ec51fee1ae2d2bf6462284f5b172c7c744497cdf9eec61dbf02",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "8fabc8d0aec9673c2b516386520f7e35883354e919c8e7ffd31486847007ffac",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "calendar.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2RheMs39",
+      "rect": {
+        "x": 835.96875,
+        "y": 643.5,
+        "width": 14,
+        "height": 14,
+        "top": 643.5,
+        "right": 849.96875,
+        "bottom": 657.5,
+        "left": 835.96875
+      },
+      "sourceSvgSha256": "e3a8a3c2c0ea8af1315ef3b86b2012212f1214948bc28caa0837207683f9c6c2",
+      "sha256": "06d06359bb958dc3b175d6741c06ff6582e7403805688d3d5acf381b33c755fe",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "74711d87727b7a8810264b08b1fb7d147edab15fd46c54ef804a715d9a55fde9",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "author.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2uIt7SpE",
+      "rect": {
+        "x": 930.9375,
+        "y": 643.5,
+        "width": 14,
+        "height": 14,
+        "top": 643.5,
+        "right": 944.9375,
+        "bottom": 657.5,
+        "left": 930.9375
+      },
+      "sourceSvgSha256": "144f83629d10714ec2830d630ff9172bd5200fbdc983bb852ccdd738d35418fd",
+      "sha256": "a51703daed1cabb07e75f3fe84ea04f3272ef8be24ddb8d4e733e4ff8ec876b9",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "0cac6a45214faeecbfa2039fd957fec30634437f732740e14d7a98e9ee2c090d",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "export.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz2d1Lz0gS",
+      "rect": {
+        "x": 1549.984375,
+        "y": 488,
+        "width": 16,
+        "height": 16,
+        "top": 488,
+        "right": 1565.984375,
+        "bottom": 504,
+        "left": 1549.984375
+      },
+      "sourceSvgSha256": "f4112a4bea48a75311d5d4634b5c76f49e74ab14eb35961cf2cb5f54a9de9d41",
+      "sha256": "c6a3f4f186f8b2effed1807b27f9d985cf4ae633340bd7ebb3fbdbebf534e4ad",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "5dbca1657f577e08f02f00ebcc2d988c7c065289456c1cf7475e392be9712898",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    },
+    {
+      "file": "download.svg",
+      "cid": "/wbVUbx81VVGsaz2DZXhuX5/wicVUbx8VVGsaz29kg16T1",
+      "rect": {
+        "x": 1633.984375,
+        "y": 488,
+        "width": 16,
+        "height": 16,
+        "top": 488,
+        "right": 1649.984375,
+        "bottom": 504,
+        "left": 1633.984375
+      },
+      "sourceSvgSha256": "5f8d423aeae6df95709a7b14e15500005de922f63d808115037abf7af74ad1f7",
+      "sha256": "13c7439ec738e1eb74cdd1d8aa462d9c1842798bef2c6dbc89e9359a2ca6b876",
+      "drawingGeometryUnchanged": true,
+      "drawingGeometrySha256": "3f937a0ac8e4db7ac464137000a93c879caefdcd26c721f254c38ec07f9cb320",
+      "zipEntry": "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded",
+      "paint": "actual computed fill/stroke serialized; UI uses alpha mask/currentColor for state colors"
+    }
+  ]
+}
