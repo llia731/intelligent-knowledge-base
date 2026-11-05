@@ -4,6 +4,7 @@ import { expandQuery } from "@/lib/kb/access";
 import { collectionNames } from "@/lib/kb/collections";
 import { withheldCount } from "@/lib/kb/query";
 import { useKb } from "@/lib/kb/store";
+import "./search-visual.css";
 
 export const Route = createFileRoute("/_app/search")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -111,16 +112,23 @@ function SearchPage() {
   }
 
   const total = live ? view.length : SAMPLE.length;
+  const pageSize = 4;
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const safePage = Math.min(page, pageCount);
+  const pageStart = (safePage - 1) * pageSize;
+  const shownResults = view.slice(pageStart, pageStart + pageSize);
+  const shownSamples = SAMPLE.slice(pageStart, pageStart + pageSize);
 
   return (
     <div>
       <h1 className="page-h">智能检索</h1>
       <p className="page-sub">语义检索、关键词检索与多路召回融合</p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3">
+      <div className="search-intro card mt-4 p-4">
+      <div className="flex flex-wrap items-center gap-3">
         <div className="seg">
           {MODES.map((item) => (
-            <button key={item} type="button" className={mode === item ? "on" : ""} onClick={() => setMode(item)}>{item}</button>
+            <button key={item} type="button" className={mode === item ? "on" : ""} onClick={() => { setMode(item); setPage(1); }}>{item}</button>
           ))}
         </div>
       </div>
@@ -134,26 +142,29 @@ function SearchPage() {
           <button key={item} type="button" className="ml-3 text-[var(--m-ink)]" onClick={() => { setQuery(item); run(item); }}>{item}</button>
         ))}
       </p>
+      <div className="search-syntax mt-4" aria-label="高级检索语法">
+        <strong className="text-sm">高级检索语法</strong>
+        <div className="search-syntax-tags">
+          {SYNTAX.map((item) => (
+            <button key={item} type="button" className="chip" onClick={() => setQuery(item)}>{item}</button>
+          ))}
+        </div>
+      </div>
+      </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)]">
         <aside className="card h-fit p-4">
           <div className="mb-2 flex items-center justify-between">
             <h2 className="text-sm font-semibold">筛选条件</h2>
-            <button type="button" className="text-xs text-[var(--m-blue)]" onClick={() => setCollection("全部知识库")}>重置</button>
+            <button type="button" className="text-xs text-[var(--m-blue)]" onClick={() => { setCollection("全部知识库"); setPage(1); }}>重置</button>
           </div>
           <p className="text-xs font-medium text-[var(--m-sub)]">知识库来源</p>
           <div className="mt-2 space-y-1">
             {scopes.slice(0, 8).map((item) => (
               <label key={item} className="flex items-center gap-2 text-sm">
-                <input type="radio" name="kb" checked={collection === item} onChange={() => setCollection(item)} />
+                <input type="radio" name="kb" checked={collection === item} onChange={() => { setCollection(item); setPage(1); }} />
                 {item}
               </label>
-            ))}
-          </div>
-          <p className="mt-4 text-xs font-medium text-[var(--m-sub)]">高级检索语法</p>
-          <div className="mt-2 flex flex-wrap gap-1">
-            {SYNTAX.map((item) => (
-              <button key={item} type="button" className="chip" onClick={() => setQuery(item)}>{item}</button>
             ))}
           </div>
           <p className="note mt-3">排序目前按本地关键词打分。语义向量与混合召回服务未接入；「混合模式」仅追加同义词。</p>
@@ -161,19 +172,19 @@ function SearchPage() {
 
         <section>
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm">
-            <p>共找到 <b>{live ? total : 128}</b> 条结果{live ? "" : "（耗时 0.34s）"}{withheld > 0 ? `，另有 ${withheld} 篇因权限未展示` : ""}</p>
+            <p>共展示 <b>{total}</b> 条{live ? "本地检索结果" : "原型示例结果"}{withheld > 0 ? `，另有 ${withheld} 篇因权限未展示` : ""}</p>
             <div className="flex items-center gap-2">
-              <select className="select" style={{ width: 140 }} value={sort} onChange={(e) => setSort(e.target.value)} aria-label="排序">
+              <select className="select" style={{ width: 140 }} value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }} aria-label="排序">
                 <option>按相关度排序</option>
                 <option>按时间</option>
               </select>
-              <button type="button" className="btn ghost" onClick={() => setExportNote("已复制当前结果标题到提示。没有文件导出服务。")}>导出</button>
+              <button type="button" className="btn ghost" onClick={() => setExportNote("当前没有文件导出服务，未生成任何下载文件。")}>导出</button>
             </div>
           </div>
           {exportNote ? <p className="note mb-2">{exportNote}</p> : null}
           <div className="space-y-3">
             {live
-              ? view.map((hit) => {
+              ? shownResults.map((hit) => {
                   const level = ({ public: "公开", internal: "内部", restricted: "受限" } as const)[hit.doc.sensitivity];
                   const score = Math.min(0.98, 0.72 + hit.score / 40).toFixed(2);
                   return (
@@ -191,7 +202,7 @@ function SearchPage() {
                     </article>
                   );
                 })
-              : SAMPLE.map((item) => (
+              : shownSamples.map((item) => (
                   <article key={item.title} className="card p-4">
                     <div className="flex items-start justify-between gap-3">
                       <h3 className="text-base font-semibold">{item.title}</h3>
@@ -211,10 +222,10 @@ function SearchPage() {
             {live && view.length === 0 ? <p className="card p-6 text-sm">没有命中已授权的已索引文档。</p> : null}
           </div>
           <div className="pager">
-            <span>{live ? `显示 ${view.length} 条` : "显示 1-4 条，共 128 条"}</span>
+            <span>{total ? `显示 ${pageStart + 1}–${Math.min(pageStart + pageSize, total)} 条，共 ${total} 条` : "共 0 条"}</span>
             <span className="flex gap-2">
-              <button type="button" className="btn ghost" disabled={page <= 1} onClick={() => setPage((n) => Math.max(1, n - 1))}>上一页</button>
-              <button type="button" className="btn ghost" onClick={() => setPage((n) => n + 1)}>下一页</button>
+              <button type="button" className="btn ghost" disabled={safePage <= 1} onClick={() => setPage((n) => Math.max(1, n - 1))}>上一页</button>
+              <button type="button" className="btn ghost" disabled={safePage >= pageCount} onClick={() => setPage((n) => Math.min(pageCount, n + 1))}>下一页</button>
             </span>
           </div>
         </section>
