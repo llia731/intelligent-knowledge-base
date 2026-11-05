@@ -1,0 +1,31 @@
+name: PR 9 independent verification
+
+on:
+  push:
+    branches:
+      - feat/modao-v1-full-frontend
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Development build
+        run: npm run build:dev
+      - name: Run tests (must pass)
+        run: npm test

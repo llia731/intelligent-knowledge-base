@@ -1,18 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Star, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useMemo, useState } from "react";
-import { PageTitle, Panel } from "@/components/app-shell";
-import { askKnowledge } from "@/lib/kb/ask.functions";
+import { Copy, Plus, Sparkles, Star, ThumbsDown, ThumbsUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { askKnowledge, getChatModels } from "@/lib/kb/ask.functions";
 import { toCitations, useKb } from "@/lib/kb/store";
-import { useCan } from "@/lib/kb/use-can";
 import type { Citation } from "@/lib/kb/types";
-import { cn, uid } from "@/lib/utils";
+import { uid } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/ask")({
-  component: ChatPage,
-});
+export const Route = createFileRoute("/_app/ask")({ component: AskPage });
 
-function ChatPage() {
+const SUGGEST = ["公司年假多少天", "如何申请报销", "试用期转正流程", "会议室怎么预定"];
+const HISTORY_SAMPLE = ["如何申请报销", "年假政策说明", "IT 设备报修流程", "试用期转正需要准备什么"];
+
+function AskPage() {
   const chats = useKb((s) => s.chats);
   const activeChatId = useKb((s) => s.activeChatId);
   const setActiveChat = useKb((s) => s.setActiveChat);
@@ -25,38 +24,55 @@ function ChatPage() {
   const strict = useKb((s) => s.settings.strict);
   const assistants = useKb((s) => s.assistants);
   const recordTrace = useKb((s) => s.recordTrace);
-  const can = useCan();
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
-  const [openCite, setOpenCite] = useState<Citation | null>(null);
   const [filter, setFilter] = useState<"all" | "fav">("all");
   const [assistantId, setAssistantId] = useState("");
+  const [modelId, setModelId] = useState("");
+  const [chatModels, setChatModels] = useState<{ id: string; label: string }[]>([]);
+  const [modelStatus, setModelStatus] = useState("正在获取内网模型…");
+  const [openCite, setOpenCite] = useState<Citation | null>(null);
+  const [showSample, setShowSample] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    getChatModels()
+      .then(({ models }) => {
+        if (!active) return;
+        setChatModels(models);
+        setModelId((previous) => (models.some((model) => model.id === previous) ? previous : models[0]?.id ?? ""));
+        setModelStatus(models.length ? "" : "当前没有已配置且被网关列出的生成模型");
+      })
+      .catch(() => {
+        if (!active) return;
+        setChatModels([]);
+        setModelId("");
+        setModelStatus("模型列表获取失败，请检查内网服务");
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const assistant = assistants.find((item) => item.id === assistantId) ?? null;
+  const chat = chats.find((item) => item.id === activeChatId) ?? chats[0];
+  const visible = chats.filter((item) => (filter === "fav" ? item.favorite : true));
+  const userMessages = chat?.messages.filter((item) => item.role === "user") ?? [];
 
-  const chat = chats.find((c) => c.id === activeChatId) ?? chats[0];
-  const list = useMemo(
-    () => (filter === "fav" ? chats.filter((c) => c.favorite) : chats),
-    [chats, filter],
-  );
-
-  async function send() {
-    const question = draft.trim();
-    if (!question || busy || !chat) return;
+  async function send(text?: string) {
+    const question = (text ?? draft).trim();
+    if (!question || busy || !chat || !modelId) return;
+    setShowSample(false);
     setDraft("");
     setBusy(true);
     const started = performance.now();
-    const found = hits(question, 5, assistant?.collection === "全部知识库" ? undefined : assistant?.collection);
+    const collection = assistant && assistant.collection !== "全部知识库" ? assistant.collection : undefined;
+    const found = hits(question, 5, collection);
     const citations = toCitations(found);
-    const userId = uid("m");
-    const asstId = uid("m");
+    appendMessage(chat.id, { id: uid("m"), role: "user", content: question, citations: [] });
+    const pendingId = uid("m");
     appendMessage(chat.id, {
-      id: userId,
-      role: "user",
-      content: question,
-      citations: [],
-    });
-    appendMessage(chat.id, {
-      id: asstId,
+      id: pendingId,
       role: "assistant",
       content: "正在依据知识库作答…",
       citations,
@@ -66,34 +82,28 @@ function ChatPage() {
       const result = await askKnowledge({
         data: {
           question,
+          modelId,
           strict,
-          contexts: citations.map((c) => ({
-            id: c.docId,
-            title: c.title,
-            excerpt: c.excerpt,
-          })),
           style: assistant?.style,
+          contexts: citations.map((item) => ({ id: item.docId, title: item.title, excerpt: item.excerpt })),
         },
       });
-      patchMessage(chat.id, asstId, {
+      patchMessage(chat.id, pendingId, {
         pending: false,
-        content: result.ok
-          ? result.text
-          : `${result.error}。下面是已召回的原文切片，可先核对来源。`,
+        content: result.ok ? result.text : result.error,
       });
       recordTrace({
         kind: "AI 问答",
-        collection: assistant?.collection || "全部知识库",
+        collection: collection ?? "全部知识库",
         query: question,
-        hits: found.slice(0, 3).map((item) => ({ title: item.doc.title, score: Number(item.score.toFixed(2)) })),
+        hits: found.slice(0, 5).map((item) => ({ title: item.doc.title, score: item.score })),
         answer: result.ok ? result.text : result.error,
         ms: Math.round(performance.now() - started),
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "问答失败";
-      patchMessage(chat.id, asstId, {
+      patchMessage(chat.id, pendingId, {
         pending: false,
-        content: `${message}。已保留召回切片，可先查看原文。`,
+        content: error instanceof Error ? error.message : "问答失败",
       });
     } finally {
       setBusy(false);
@@ -102,196 +112,143 @@ function ChatPage() {
 
   return (
     <div>
-      <PageTitle kicker="问答" title="基于知识库的智能问答">
-        <p className="text-sm text-muted">
-          {can("受限知识") ? "当前角色可召回受限知识" : "当前角色已隐藏受限文档"}
-          {assistant ? ` · 助手「${assistant.name}」只查${assistant.collection}` : ""}
-        </p>
-      </PageTitle>
-      <div className="grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)]">
-        <Panel className="p-3">
-          <button
-            type="button"
-            onClick={() => newChat()}
-            className="mb-3 flex min-h-11 w-full items-center justify-center rounded-md bg-teal text-sm font-medium text-teal-fg"
-          >
-            新对话
+      <h1 className="page-h">AI 问答</h1>
+      <p className="page-sub">基于知识库内容的自然语言智能问答</p>
+      <div className="mt-4 grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)]">
+        <aside className="card flex flex-col p-3">
+          <button type="button" className="btn w-full" onClick={() => { newChat(); setShowSample(true); }}>
+            <Plus size={14} />新对话
           </button>
-          <label className="mb-3 block text-xs text-muted">
-            助手
-            <select
-              value={assistantId}
-              onChange={(event) => setAssistantId(event.target.value)}
-              className="mt-1 min-h-10 w-full rounded-md border border-line bg-card px-2 text-sm text-ink"
-            >
-              <option value="">不限定知识库</option>
-              {assistants.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="mb-2 grid grid-cols-2 gap-1 text-sm">
-            <button
-              type="button"
-              className={cn("min-h-10 rounded-md", filter === "all" ? "bg-ink text-paper" : "text-muted")}
-              onClick={() => setFilter("all")}
-            >
-              历史
-            </button>
-            <button
-              type="button"
-              className={cn("min-h-10 rounded-md", filter === "fav" ? "bg-ink text-paper" : "text-muted")}
-              onClick={() => setFilter("fav")}
-            >
-              收藏
-            </button>
-          </div>
-          <ul className="flex max-h-80 flex-col gap-1 overflow-auto lg:max-h-[32rem]">
-            {list.length === 0 ? (
-              <li className="px-2 py-6 text-sm text-muted">还没有收藏的会话。</li>
-            ) : (
-              list.map((item) => (
-                <li key={item.id} className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={() => setActiveChat(item.id)}
-                    className={cn(
-                      "min-h-11 flex-1 truncate rounded-md px-2 text-left text-sm",
-                      item.id === chat?.id ? "bg-paper font-medium" : "hover:bg-paper",
-                    )}
-                  >
-                    {item.title}
-                  </button>
-                  <button
-                    type="button"
-                    aria-label={item.favorite ? "取消收藏" : "收藏会话"}
-                    onClick={() => toggleFavorite(item.id)}
-                    className="grid size-11 place-items-center"
-                  >
-                    <Star
-                      className={cn("size-4", item.favorite ? "fill-copper text-copper" : "text-muted")}
-                    />
-                  </button>
-                </li>
-              ))
-            )}
-          </ul>
-        </Panel>
-        <Panel className="flex min-h-[70vh] flex-col">
-          <div className="flex-1 space-y-4 overflow-auto p-4 sm:p-6">
-            {chat?.messages.map((message) => (
-              <article
-                key={message.id}
-                className={cn("max-w-3xl", message.role === "user" ? "ml-auto" : "")}
-              >
-                <p className="mb-1 text-xs text-muted">{message.role === "user" ? "你" : "智识"}</p>
-                <div
-                  className={cn(
-                    "rounded-lg px-4 py-3 text-sm leading-6",
-                    message.role === "user" ? "bg-ink text-paper" : "bg-paper",
-                  )}
-                >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
-                </div>
-                {message.role === "assistant" && message.citations.length > 0 ? (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {message.citations.map((cite) => (
-                      <button
-                        key={`${message.id}-${cite.index}`}
-                        type="button"
-                        onClick={() => setOpenCite(cite)}
-                        className="min-h-10 rounded-md border border-line bg-card px-3 text-xs text-ink"
-                      >
-                        <span className="mr-1 font-medium text-copper">【{cite.index}】</span>
-                        {cite.title}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
-                {message.role === "assistant" && !message.pending && message.id !== "m_welcome" ? (
-                  <div className="mt-2 flex gap-1">
-                    <button
-                      type="button"
-                      aria-label="有用"
-                      onClick={() => feedback(chat.id, message.id, "up")}
-                      className={cn(
-                        "grid size-11 place-items-center rounded-md",
-                        message.feedback === "up" ? "bg-ok-bg text-ok" : "text-muted",
-                      )}
-                    >
-                      <ThumbsUp className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="不满意"
-                      onClick={() => feedback(chat.id, message.id, "down")}
-                      className={cn(
-                        "grid size-11 place-items-center rounded-md",
-                        message.feedback === "down" ? "bg-warn-bg text-copper" : "text-muted",
-                      )}
-                    >
-                      <ThumbsDown className="size-4" />
-                    </button>
-                    {message.feedback === "down" ? (
-                      <span className="self-center text-xs text-copper">已交给审核</span>
-                    ) : null}
-                  </div>
-                ) : null}
-              </article>
+          <p className="mt-4 px-1 text-xs font-semibold text-[var(--m-sub)]">历史会话</p>
+          <div className="mt-2 space-y-1">
+            {HISTORY_SAMPLE.map((item) => (
+              <button key={item} type="button" className="w-full rounded-lg px-2 py-1.5 text-left text-sm hover:bg-[var(--m-paper)]" onClick={() => { setDraft(item); setShowSample(true); }}>
+                {item}
+              </button>
+            ))}
+            {visible.filter((item) => item.title !== "新对话").map((item) => (
+              <button key={item.id} type="button" className="flex w-full items-center gap-1 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-[var(--m-paper)]" onClick={() => { setActiveChat(item.id); setShowSample(false); }}>
+                <span className="min-w-0 flex-1 truncate">{item.title}</span>
+                <span className="icon-btn" onClick={(event) => { event.stopPropagation(); toggleFavorite(item.id); }} aria-label="收藏">
+                  <Star size={14} className={item.favorite ? "fill-amber-400 text-amber-500" : ""} />
+                </span>
+              </button>
             ))}
           </div>
-          <form
-            className="border-t border-line p-3 sm:p-4"
-            onSubmit={(event) => {
-              event.preventDefault();
-              void send();
-            }}
-          >
-            <label className="sr-only" htmlFor="question">
-              输入问题
-            </label>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <textarea
-                id="question"
-                value={draft}
-                onChange={(event) => setDraft(event.target.value)}
-                rows={2}
-                placeholder="输入问题，按 Enter 发送..."
-                className="min-h-16 flex-1 resize-none rounded-md border border-line bg-card px-3 py-2 text-sm outline-none focus:border-teal"
-              />
-              <button
-                type="submit"
-                disabled={busy || !draft.trim()}
-                className="min-h-11 rounded-md bg-teal px-5 text-sm font-medium text-teal-fg disabled:opacity-50"
+          <button type="button" className="mt-3 text-left text-xs text-[var(--m-blue)]" onClick={() => setFilter(filter === "fav" ? "all" : "fav")}>
+            {filter === "fav" ? "查看全部会话" : "收藏会话"}
+          </button>
+          <p className="mt-3 px-1 text-xs font-semibold text-[var(--m-sub)]">收藏会话</p>
+          <div className="mt-1 space-y-1 text-sm text-amber-600">
+            <p>入职指引合集</p>
+            <p>财务报销百问百答</p>
+          </div>
+          <label className="mt-4 block text-xs text-[var(--m-sub)]">AI 助手
+            <select className="select mt-1" value={assistantId} onChange={(e) => setAssistantId(e.target.value)} aria-label="选择助手">
+              <option value="">不限定知识库</option>
+              {assistants.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+            </select>
+          </label>
+        </aside>
+
+        <section className="card flex min-h-[640px] flex-col p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-base font-medium"><Sparkles size={16} className="text-[var(--m-blue)]" />AI 助手</h2>
+            <label className="flex items-center gap-2 text-xs text-[var(--m-sub)]">
+              模型
+              <select
+                aria-label="选择内网生成模型"
+                className="select"
+                style={{ width: 180 }}
+                value={modelId}
+                disabled={busy || chatModels.length === 0}
+                onChange={(event) => setModelId(event.target.value)}
               >
-                {busy ? "作答中" : "发送"}
-              </button>
-            </div>
+                {chatModels.length === 0 ? <option value="">暂无可用模型</option> : null}
+                {chatModels.map((model) => <option key={model.id} value={model.id}>{model.label}</option>)}
+              </select>
+            </label>
+          </div>
+          {modelStatus ? <p role="status" className="note mb-2">{modelStatus}。不会使用原型里的 GPT-4 等演示名称。</p> : null}
+
+          <div className="flex-1 space-y-4 overflow-auto">
+            {showSample && userMessages.length === 0 ? (
+              <div>
+                <div className="py-6 text-center">
+                  <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-[var(--m-blue-soft)] text-[var(--m-blue)]"><Sparkles /></span>
+                  <p className="mt-3 text-xl font-semibold">我是你的 AI 知识助手</p>
+                  <p className="text-sm text-[var(--m-sub)]">基于企业知识库，为你提供可信、可溯源的问答服务。</p>
+                  <div className="mt-4 flex flex-wrap justify-center gap-2">
+                    {SUGGEST.map((item) => (
+                      <button key={item} type="button" className="chip" onClick={() => void send(item)}>{item}</button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-end"><span className="rounded-2xl bg-[var(--m-blue)] px-3 py-2 text-sm text-white">公司年假多少天？</span></div>
+                <div className="mt-3 rounded-2xl bg-[var(--m-paper)] p-4 text-sm leading-7">
+                  <p>根据《员工手册》第 3.2 条规定，公司员工年假标准如下：</p>
+                  <ul className="mt-1 list-disc pl-5">
+                    <li>入职满 1 年不满 10 年：每年 <b>5 天</b></li>
+                    <li>入职满 10 年不满 20 年：每年 <b>10 天</b></li>
+                    <li>入职满 20 年及以上：每年 <b>15 天</b></li>
+                  </ul>
+                  <p className="mt-2">年假需在当年 12 月 31 日前休完，可累计至次年的上限为 2 天。如有疑问，可联系 HR 确认个人工龄折算。</p>
+                  <pre className="mt-3 overflow-auto rounded-lg bg-white p-3 text-xs text-[var(--m-sub)]">{`// 示例：查询剩余年假\nGET /api/leave/balance?type=annual`}</pre>
+                  <p className="mt-3 text-xs">可信度 <span className="tag green">高</span> <span className="note ml-2">以上为原型示例排版，不是本次模型调用。</span></p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <button type="button" className="rounded-xl border border-[var(--m-line)] bg-white px-3 py-2 text-left text-sm" onClick={() => setOpenCite({ docId: "sample", title: "员工手册 2024.pdf", excerpt: "第 3.2 条 年假标准", index: 1 })}>
+                      员工手册 2024.pdf <span className="note">P.12 · 相似度 96%</span>
+                    </button>
+                    <button type="button" className="rounded-xl border border-[var(--m-line)] bg-white px-3 py-2 text-left text-sm" onClick={() => setOpenCite({ docId: "sample2", title: "HR 政策 FAQ.docx", excerpt: "年假累计说明", index: 2 })}>
+                      HR 政策 FAQ.docx <span className="note">P.4 · 相似度 88%</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {chat?.messages.filter((item) => item.id !== "m_welcome").map((message) => (
+              <div key={message.id} className={message.role === "user" ? "flex justify-end" : ""}>
+                <div className={message.role === "user" ? "max-w-[80%] rounded-2xl bg-[var(--m-blue)] px-3 py-2 text-sm text-white" : "max-w-[92%] rounded-2xl bg-[var(--m-paper)] p-4 text-sm leading-7"}>
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  {message.role === "assistant" && !message.pending ? (
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <button type="button" className="icon-btn" aria-label="有用" onClick={() => feedback(chat.id, message.id, "up")}><ThumbsUp size={14} /></button>
+                      <button type="button" className="icon-btn" aria-label="不满意" onClick={() => feedback(chat.id, message.id, "down")}><ThumbsDown size={14} /></button>
+                      <button type="button" className="icon-btn" aria-label="复制" onClick={() => void navigator.clipboard?.writeText(message.content)}><Copy size={14} /></button>
+                      {message.citations.map((cite) => (
+                        <button key={cite.docId + cite.index} type="button" className="chip" onClick={() => setOpenCite(cite)}>
+                          [{cite.index}] {cite.title}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <form className="mt-3 flex items-center gap-2" onSubmit={(event) => { event.preventDefault(); void send(); }}>
+            <input
+              className="field"
+              placeholder={modelId ? "输入问题，按 Enter 发送" : "暂无可用模型，无法发送"}
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              disabled={!modelId}
+            />
+            <button className="btn" type="submit" disabled={busy || !draft.trim() || !modelId}>{busy ? "作答中" : "发送"}</button>
           </form>
-        </Panel>
+        </section>
       </div>
+
       {openCite ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-          <button
-            type="button"
-            aria-label="关闭来源"
-            className="absolute inset-0 bg-ink/40"
-            onClick={() => setOpenCite(null)}
-          />
-          <Panel className="relative z-10 m-4 w-full max-w-lg p-5">
-            <p className="text-xs tracking-widest text-copper">回答来源 【{openCite.index}】</p>
-            <h2 className="mt-1 font-display text-2xl">{openCite.title}</h2>
-            <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-ink">{openCite.excerpt}</p>
-            <button
-              type="button"
-              onClick={() => setOpenCite(null)}
-              className="mt-4 min-h-11 rounded-md border border-line px-4 text-sm"
-            >
-              关闭
-            </button>
-          </Panel>
+        <div className="overlay" onClick={() => setOpenCite(null)}>
+          <div className="modal" onClick={(event) => event.stopPropagation()}>
+            <h2 className="text-lg font-semibold">{openCite.title}</h2>
+            <p className="mt-2 text-sm leading-6">{openCite.excerpt}</p>
+            <p className="note mt-2">{openCite.docId.startsWith("sample") ? "原型示例引用，不是知识库切片。" : "来自当前召回的本地切片。"}</p>
+            <button type="button" className="btn mt-4" onClick={() => setOpenCite(null)}>关闭</button>
+          </div>
         </div>
       ) : null}
     </div>

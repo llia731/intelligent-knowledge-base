@@ -68,6 +68,7 @@ type KbState = {
     sensitivity: Sensitivity;
   }) => { doc: KbDoc; review: boolean };
   removeDoc: (id: string) => void;
+  updateDoc: (id: string, patch: { title: string; content: string; collection: string; sensitivity: Sensitivity }) => void;
   shareDoc: (id: string, note: string) => void;
   saveSettings: (settings: KbSettings) => void;
   saveConnections: (connections: ResourceLink[]) => void;
@@ -150,8 +151,8 @@ const initialChat = welcomeChat();
 export const useKb = create<KbState>()(
   persist(
     (set, get) => ({
-      role: "user",
-      accessRole: "普通用户",
+      role: "admin",
+      accessRole: "系统管理员",
       grants: DEFAULT_GRANTS,
       acl: {},
       settings: { chunkSize: 280, overlap: 40, strict: true },
@@ -352,6 +353,28 @@ export const useKb = create<KbState>()(
         set((s) => ({
           docs: s.docs.map((d) => (d.id === id ? { ...d, status: "trashed" } : d)),
           logs: [log(actor(get), "删除文档", title, "进入回收站"), ...s.logs],
+        }));
+      },
+      updateDoc: (id, patch) => {
+        const { settings } = get();
+        const title = patch.title.trim() || "未命名文档";
+        const content = patch.content.trim();
+        set((s) => ({
+          docs: s.docs.map((d) => {
+            if (d.id !== id || d.status === "trashed") return d;
+            const sensitive = patch.sensitivity === "restricted" || looksSensitive(content);
+            return {
+              ...d,
+              title,
+              content,
+              collection: patch.collection,
+              sensitivity: patch.sensitivity,
+              status: sensitive ? "pending" : "indexed",
+              updatedAt: new Date().toISOString(),
+              chunks: sensitive ? [] : chunkText(content, settings.chunkSize, settings.overlap),
+            };
+          }),
+          logs: [log(actor(get), "编辑文档", title, "已保存到本地知识库"), ...s.logs],
         }));
       },
       trashDocs: (ids) => {

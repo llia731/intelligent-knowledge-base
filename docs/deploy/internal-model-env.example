@@ -1,0 +1,12 @@
+# Server-side environment example for internal Chat Completion.
+# Set on the server only; never prefix API keys with VITE_.
+# Actual gateway registered model IDs must be verified in the target network.
+IKB_MODEL_BASE_URL=http://172.16.12.3:4000/v1
+IKB_CHAT_MODELS=GLM-5.3
+
+# Inject this secret from protected deployment settings, never commit its value.
+# INTERNAL_LLM_API_KEY=
+
+# The legacy prototype allows client-provided contexts in local demo mode.
+# If DATABASE_URL is set, it refuses production QA until server-side
+# authorized retrieval replaces the prototype pipeline.
