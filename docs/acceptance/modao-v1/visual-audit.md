@@ -123,11 +123,11 @@
 | `node scripts/modao-interaction-audit.mjs`，配置见 README | 1 | 8 执行完成、2 个真实断言/操作失败，未跳过或强制点击掩盖 |
 | `npm run typecheck` | 0 | 通过 |
 | `npm run build:dev` | 0 | 通过，有依赖模块 use client 打包警告 |
-| `npm test` | 1 | 197 项：185 通过、12 失败，与上一轮补回 app-env 后一致，仍是缺失 Grok 文档及品牌元数据夹具污染；未修改/跳过测试 |
+| `npm test` | 1 | 首阶段 197 项：185 通过、12 失败，后续 TypeScript 测试被 && 短路，未把上一轮 59 项通过冒充本轮结果；失败与上一轮补回 app-env 后一致，仍是缺失 Grok 文档及品牌元数据夹具污染；未修改/跳过测试 |
 
 离线图库已通过 localhost 验证：16 个页面/弹窗段落、全部图片可加载、滑块工作、无 JavaScript 异常。云 Chromium 的 file:// 被管理员策略禁止，已用本地 HTTP 解决，无需改变策略。
 
-交互脚本初稿出现动态 label 定位和未持久化种子读取的工具误报，已修正选择器，并经真实 UI 上传合成待审文档复测。初稿诊断日志保留在 `diagnostics/`，最终判定只依据最终结果和 trace；未修改业务代码来消除失败。
+交互脚本初稿出现动态 label 定位和未持久化种子读取的工具误报，已修正选择器，并经真实 UI 上传合成待审文档复测。初稿诊断日志及已被最终复测替代的截图保留在 `diagnostics/`，最终判定只依据最终结果和 trace；未修改业务代码来消除失败。
 
 原始 PR #10 capture 工具在 search 捕到一次 hydration 属性警告，涉及截图期间输入框的 `caret-color:transparent`。等待 networkidle 并分离 context 的稳定采集未复现该警告；保留原日志，暂作为截图时序相关疑点，不直接归因业务。稳定 React 采集每页仍有 Google Fonts 和 Grok 扩展两项资源失败。原型还有字体/CSS 404，但运行时画布、内联 SVG、14 页内容和两组弹窗已可见。
 
