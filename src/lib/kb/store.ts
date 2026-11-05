@@ -488,11 +488,20 @@ export const useKb = create<KbState>()(
     {
       name: "zhishi-kb-v1",
       skipHydration: true,
+      // Raw one-time demo tokens must never be stored in browser localStorage.
+      partialize: (state) => ({ ...state, freshSecret: "" }),
+      onRehydrateStorage: () => (state, error) => {
+        // Re-write the sanitized state so legacy tokens also leave storage,
+        // rather than only disappearing from the in-memory merged state.
+        if (!error && state) state.dismissSecret();
+      },
       merge: (persisted, current) => {
         const saved = (persisted ?? {}) as Partial<KbState>;
         return {
           ...current,
           ...saved,
+          // Also clear secrets written by older persisted store versions.
+          freshSecret: "",
           connections: saved.connections && saved.connections.length > 0 ? saved.connections : current.connections,
           grants: saved.grants ?? current.grants,
           accessRole: saved.accessRole ?? current.accessRole,

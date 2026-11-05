@@ -44,8 +44,8 @@ function Dashboard() {
         {STATS.map((item, index) => (
           <article key={item.label} className="stat" title="原型示例指标">
             <p className="k">{item.label}</p>
-            <p className="v">{index === 3 ? String(openReviews || item.value) : item.value}</p>
-            <p className="d">{index === 3 && openReviews ? `本地待审 ${openReviews} 条` : item.delta}</p>
+            <p className="v">{index === 3 ? String(openReviews) : item.value}</p>
+            <p className="d">{index === 3 ? `本地待审 ${openReviews} 条` : item.delta}</p>
           </article>
         ))}
       </div>
