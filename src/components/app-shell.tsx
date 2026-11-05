@@ -66,8 +66,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [bell, setBell] = useState(false);
   const [help, setHelp] = useState(false);
 
+  const [clientReady, setClientReady] = useState(false);
   useEffect(() => {
+    const finish = () => setClientReady(true);
+    const unsubscribe = useKb.persist.onFinishHydration(finish);
     void useKb.persist.rehydrate();
+    if (useKb.persist.hasHydrated()) finish();
+    return unsubscribe;
   }, []);
 
   const items = (adminMode ? ADMIN_NAV : USER_NAV).filter((item) => can(item.perm));
@@ -127,7 +132,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div className="shell">
+    <div
+      className="shell"
+      inert={!clientReady}
+      aria-busy={!clientReady}
+      data-app-ready={clientReady ? "true" : "false"}
+    >
       <aside className="side">{nav}</aside>
       {open ? (
         <div className="mobile-scrim lg:hidden">

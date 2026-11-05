@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /** UI-only interaction audit against localhost. Separate fresh browser state per case. */
+import { waitForAppReady } from "./modao-browser-ready.mjs";
 import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -50,7 +51,10 @@ async function run(id, fn) {
     await p.screenshot({ path: path.join(out, `${id}-${name}-normalized.png`) });
     await style.evaluate((e) => e.remove());
   };
-  const go = async (url) => p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+  const go = async (url) => {
+    await p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+    await waitForAppReady(p);
+  };
   const state = () => p.evaluate(() => JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state);
   try {
     await fn({ p, r, shot, go, state, c });
@@ -182,6 +186,7 @@ try {
     await shot("draft");
     await save(p);
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     const s = await state();
     assert.deepEqual(s.profile, { name: "V16验收草稿", dept: "验收组" });
     assert.deepEqual(s.personalPreferences, prefs());
@@ -325,6 +330,7 @@ try {
       localStorage.setItem(k, JSON.stringify(s));
     });
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     const s = await state();
     assert.deepEqual(s.profile, before.profile);
     assert.deepEqual(s.docs, before.docs);
@@ -362,6 +368,7 @@ try {
       localStorage.setItem(k, JSON.stringify(s));
     });
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     const s = await state();
     assert.equal(s.personalPreferences.theme, "dark");
     assert.deepEqual(s.personalPreferences.notificationChannels, ["sms"]);
@@ -467,6 +474,7 @@ try {
     }
     await save(p);
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     await open(p);
     await tab(p, "检索偏好");
     assert.equal(await p.getByLabel("默认检索模式", { exact: true }).inputValue(), "keyword");

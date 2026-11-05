@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /** UI-only interaction audit against localhost. Separate fresh browser state per case. */
+import { waitForAppReady } from "./modao-browser-ready.mjs";
 import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -42,7 +43,10 @@ async function run(id, fn) {
   );
   const shot = async (name) =>
     p.screenshot({ path: path.join(out, `${id}-${name}.png`), caret: "initial" });
-  const go = async (url) => p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+  const go = async (url) => {
+    await p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+    await waitForAppReady(p);
+  };
   const state = () => p.evaluate(() => JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state);
   try {
     await fn({ p, r, shot, go, state });
@@ -70,6 +74,7 @@ try {
     await shot("drawer");
     await p.getByRole("button", { name: "保存", exact: true }).click();
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     await p.getByRole("button", { name: "个人中心", exact: true }).click();
     assert.equal(await p.getByLabel("显示名称", { exact: true }).inputValue(), "验收用户");
     assert.equal(await p.getByLabel("所属部门", { exact: true }).inputValue(), "验收组");
@@ -112,6 +117,7 @@ try {
       if (pass) assert.ok(doc.chunks.length > 0);
       else assert.equal(doc.chunks.length, 0);
       await p.reload({ waitUntil: "networkidle" });
+      await waitForAppReady(p);
       assert.equal(
         (await state()).reviews.find((x) => x.title === item.title).status,
         pass ? "passed" : "rejected",
@@ -140,6 +146,7 @@ try {
     await shot("zero-pending");
     assert.equal(r.observations.actual, "0", "No pending reviews should display zero");
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     await stat.locator(".v").filter({ hasText: /^0$/ }).waitFor();
     assert.equal(await stat.locator(".v").innerText(), "0");
     assert.equal((await state()).reviews.filter((item) => item.status === "open").length, 0);
@@ -179,6 +186,7 @@ try {
         r.observations.legacyFixtureInjected = true;
       }
       await p.reload({ waitUntil: "networkidle" });
+      await waitForAppReady(p);
       await shot("direct-reload");
       r.observations.afterReloadLeakKeys = await leaks();
       r.observations.fullSecretVisibleAfterReload = (await p.locator("body").innerText()).includes(
@@ -200,6 +208,7 @@ try {
       await p.getByRole("button", { name: "关闭", exact: true }).click();
       await row.getByRole("button", { name: "撤销", exact: true }).click();
       await p.reload({ waitUntil: "networkidle" });
+      await waitForAppReady(p);
       assert.equal(await p.getByRole("row").filter({ hasText: name }).count(), 0);
       r.steps.push(
         "创建时只在界面显示完整值",
