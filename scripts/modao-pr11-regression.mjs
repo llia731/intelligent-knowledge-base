@@ -23,6 +23,7 @@ async function run(id, fn) {
   await c.tracing.start({ screenshots: true, snapshots: true });
   const p = await c.newPage();
   p.setDefaultTimeout(7000);
+  p.setDefaultNavigationTimeout(30000);
   const r = {
     id,
     steps: [],
@@ -39,7 +40,8 @@ async function run(id, fn) {
   p.on("requestfailed", (q) =>
     r.failedRequests.push({ url: q.url(), error: q.failure()?.errorText }),
   );
-  const shot = async (name) => p.screenshot({ path: path.join(out, `${id}-${name}.png`) });
+  const shot = async (name) =>
+    p.screenshot({ path: path.join(out, `${id}-${name}.png`), caret: "initial" });
   const go = async (url) => p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
   const state = () => p.evaluate(() => JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state);
   try {
@@ -130,11 +132,17 @@ try {
     assert.equal((await state()).reviews.filter((x) => x.status === "open").length, 0);
     await go("/admin");
     const stat = p.locator("article").filter({ has: p.getByText("待审核内容", { exact: true }) });
+    r.observations.initialRenderValue = await stat.locator(".v").innerText();
+    // Full navigations initially render server seed data. Await the client value,
+    // rather than freezing a pre-hydration observation before taking the screenshot.
+    await stat.locator(".v").filter({ hasText: /^0$/ }).waitFor();
     r.observations.actual = await stat.locator(".v").innerText();
     await shot("zero-pending");
     assert.equal(r.observations.actual, "0", "No pending reviews should display zero");
     await p.reload({ waitUntil: "networkidle" });
+    await stat.locator(".v").filter({ hasText: /^0$/ }).waitFor();
     assert.equal(await stat.locator(".v").innerText(), "0");
+    assert.equal((await state()).reviews.filter((item) => item.status === "open").length, 0);
     await shot("zero-after-reload");
     r.steps.push("审核清零后显示0", "刷新后仍为0");
   });

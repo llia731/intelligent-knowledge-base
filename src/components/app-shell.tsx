@@ -18,9 +18,9 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { ACCESS_ROLES, type AccessRole } from "@/lib/kb/access";
 import { useKb } from "@/lib/kb/store";
 import { useCan } from "@/lib/kb/use-can";
+import { PersonalSettingsDialog } from "@/components/kb/personal-settings-dialog";
 import { cn } from "@/lib/utils";
 
 const USER_NAV = [
@@ -58,25 +58,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const adminMode = path === "/admin" || path.startsWith("/admin/");
   const [globalQuery, setGlobalQuery] = useState("");
   const accessRole = useKb((s) => s.accessRole);
-  const setAccessRole = useKb((s) => s.setAccessRole);
   const profile = useKb((s) => s.profile);
-  const saveProfile = useKb((s) => s.saveProfile);
   const logs = useKb((s) => s.logs);
   const can = useCan();
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [bell, setBell] = useState(false);
   const [help, setHelp] = useState(false);
-  const [name, setName] = useState(profile.name);
-  const [dept, setDept] = useState(profile.dept);
 
   useEffect(() => {
     void useKb.persist.rehydrate();
   }, []);
-  useEffect(() => {
-    setName(profile.name);
-    setDept(profile.dept);
-  }, [profile.name, profile.dept]);
 
   const items = (adminMode ? ADMIN_NAV : USER_NAV).filter((item) => can(item.perm));
   const canAdmin = ADMIN_NAV.some((item) => can(item.perm));
@@ -120,13 +112,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           type="button"
           className="who"
           onClick={() => {
-            setName(profile.name);
-            setDept(profile.dept);
             setProfileOpen(true);
             setOpen(false);
           }}
         >
-          <span className="avatar">{accessRole.slice(0, 1)}</span>
+          <span className="avatar">{profile.name.trim().slice(0, 1) || accessRole.slice(0, 1)}</span>
           <span>
             <strong>{accessRole}</strong>
             <span>admin@example.com</span>
@@ -220,49 +210,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
 
-      {profileOpen ? (
-        <div className="drawer-scrim">
-          <button type="button" aria-label="关闭个人中心" className="absolute inset-0" onClick={() => setProfileOpen(false)} />
-          <aside className="drawer">
-            <p className="text-xs text-[var(--m-blue)]">当前身份</p>
-            <h2 className="mt-1 text-2xl font-semibold">个人中心</h2>
-            <p className="page-sub">显示名称会出现在审计记录里。当前角色：{accessRole}。</p>
-            <label className="mt-4 block text-sm">
-              显示名称
-              <input className="field mt-1" value={name} onChange={(event) => setName(event.target.value)} />
-            </label>
-            <label className="mt-3 block text-sm">
-              所属部门
-              <input className="field mt-1" value={dept} onChange={(event) => setDept(event.target.value)} />
-            </label>
-            <label className="mt-3 block text-sm">
-              演示角色
-              <select
-                id="role-switch"
-                className="select mt-1"
-                value={accessRole}
-                onChange={(event) => setAccessRole(event.target.value as AccessRole)}
-              >
-                {ACCESS_ROLES.map((item) => <option key={item} value={item}>{item}</option>)}
-              </select>
-            </label>
-            <p className="note mt-2">角色切换只影响本机演示权限，不会取代服务端鉴权。</p>
-            <div className="mt-5 flex gap-2">
-              <button
-                type="button"
-                className="btn"
-                onClick={() => {
-                  saveProfile({ name: name.trim() || "当前用户", dept: dept.trim() || "未分配" });
-                  setProfileOpen(false);
-                }}
-              >
-                保存
-              </button>
-              <button type="button" className="btn ghost" onClick={() => setProfileOpen(false)}>取消</button>
-            </div>
-          </aside>
-        </div>
-      ) : null}
+      <PersonalSettingsDialog open={profileOpen} onOpenChange={setProfileOpen} />
     </div>
   );
 }

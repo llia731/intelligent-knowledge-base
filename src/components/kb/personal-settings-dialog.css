@@ -1,0 +1,461 @@
+/* V16: measured 768x620 desktop frame. All rules stay scoped to this dialog. */
+.ps-backdrop {
+  position: fixed;
+  inset: 64px 0 0 256px;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.6);
+}
+.ps-dialog {
+  position: fixed;
+  left: calc(50% + 128px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 71;
+  width: min(768px, calc(100vw - 32px));
+  height: 620px;
+  max-height: calc(100dvh - 32px);
+  background: #fff;
+  color: #0d1117;
+  border: 1px solid #e2e6ec;
+  border-radius: 12px;
+  overflow: auto;
+  outline: none;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+.ps-header {
+  position: relative;
+  padding: 24px 24px 0;
+}
+.ps-title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+.ps-subtitle {
+  margin-top: 4px;
+  color: #4a5568;
+  font-size: 14px;
+  line-height: 20px;
+}
+.ps-close {
+  position: absolute;
+  top: 35px;
+  right: 28px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: #4a5568;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ps-close:hover {
+  background: #f3f5f8;
+}
+.ps-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e6ec;
+  margin: 18px 24px 0;
+  gap: 0;
+}
+.ps-tab {
+  flex: none;
+  width: 94px;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #4a5568;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+.ps-tab.active {
+  color: #1684fc;
+  background: #e6f7ff;
+  border-bottom-color: #1684fc;
+  font-weight: 400;
+}
+.ps-tab:focus-visible,
+.ps-close:focus-visible,
+.ps-avatar:focus-visible,
+.ps-input:focus-visible,
+.ps-primary:focus-visible,
+.ps-secondary:focus-visible,
+.ps-toggle-row:focus-within,
+.ps-choice:focus-within,
+.ps-check:focus-within,
+.ps-dev-role select:focus-visible {
+  outline: 2px solid #1684fc;
+  outline-offset: 2px;
+}
+.ps-body {
+  padding: 23px 24px 0;
+}
+.ps-section-title {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.ps-field {
+  margin-bottom: 20px;
+}
+.ps-field:last-child {
+  margin-bottom: 0;
+}
+.ps-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+.ps-input {
+  border: 1px solid #e2e6ec;
+  border-radius: 12px;
+  background: #f8f9fb;
+  width: 100%;
+  padding: 0 10px;
+  height: 40px;
+  color: #0d1117;
+  font-size: 14px;
+  line-height: 20px;
+}
+.ps-avatars,
+.ps-choices {
+  display: flex;
+  gap: 12px;
+}
+.ps-avatar {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid #e2e6ec;
+  color: #1d6cff;
+  background: #f8f9fb;
+  cursor: pointer;
+}
+.ps-avatar.active {
+  border: 2px solid #1d6cff;
+  background: #f0f8ff;
+}
+.ps-body-profile .ps-field:has(.ps-avatars) {
+  margin-bottom: 22px;
+}
+.ps-field:has(.ps-choices) .ps-label,
+.ps-notification-field .ps-label {
+  margin-bottom: 8px;
+}
+.ps-choice {
+  height: 38px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  cursor: pointer;
+  border: 1px solid #e2e6ec;
+  border-radius: 12px;
+  background: #f8f9fb;
+}
+.ps-choice.selected {
+  color: #0d1117;
+}
+.ps-choice input {
+  accent-color: #1684fc;
+  width: 16px;
+  height: 16px;
+}
+.ps-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #f8f9fb;
+  border: 1px solid #e2e6ec;
+  border-radius: 12px;
+  padding: 12px;
+  height: 62px;
+  cursor: pointer;
+}
+.ps-toggle-row span {
+  display: grid;
+  gap: 0;
+}
+.ps-toggle-row b {
+  font-weight: 400;
+  line-height: 20px;
+}
+.ps-toggle-row small {
+  color: #4a5568;
+  font-size: 12px;
+  line-height: 16px;
+}
+.ps-toggle-row input {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 45px;
+  height: 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #e2e2e3;
+  cursor: pointer;
+}
+.ps-toggle-row input::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px #0002;
+}
+.ps-toggle-row input:checked {
+  background: #1d6cff;
+}
+.ps-toggle-row input:checked::before {
+  transform: translateX(21px);
+}
+.ps-checkbox-grid,
+.ps-frequency {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.ps-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 12px;
+  border: 1px solid #e2e6ec;
+  border-radius: 12px;
+  background: #f8f9fb;
+  cursor: pointer;
+}
+.ps-check input {
+  accent-color: #1684fc;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.ps-error {
+  color: #b91c1c;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.ps-footer {
+  border-top: 1px solid #e2e6ec;
+  margin: 24px 24px 0;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+.ps-actions {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+  flex: none;
+}
+.ps-secondary,
+.ps-primary {
+  height: 36px;
+  border-radius: 12px;
+  padding: 0 16px;
+  cursor: pointer;
+  line-height: 20px;
+}
+.ps-secondary {
+  border: 1px solid #e2e6ec;
+  color: #0d1117;
+  background: #f8f9fb;
+}
+.ps-primary {
+  color: white;
+  background: #1d6cff;
+  border: 0;
+}
+/* Retained demo tool and capability disclosure; not an approved prototype pixel exception. */
+.ps-dev-role {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  max-width: 520px;
+  color: #64748b;
+  font-size: 10px;
+  line-height: 14px;
+}
+.ps-dev-role select {
+  font-size: 11px;
+  max-width: 110px;
+  border: 1px solid #e2e6ec;
+  border-radius: 4px;
+}
+.ps-dev-role span {
+  color: #64748b;
+}
+@media (max-width: 1023px) {
+  .ps-backdrop {
+    inset: 0;
+  }
+  .ps-dialog {
+    left: 50%;
+  }
+}
+@media (max-width: 767px) {
+  .ps-tabs {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  .ps-tab {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    padding: 0 6px;
+    font-size: 12px;
+  }
+  .ps-body {
+    padding: 20px 16px 0;
+  }
+  .ps-header {
+    padding: 24px 16px 0;
+  }
+  .ps-close {
+    right: 16px;
+  }
+  .ps-choices {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .ps-choice {
+    padding: 0 10px;
+  }
+  .ps-footer {
+    flex-wrap: wrap;
+    margin: 24px 16px 0;
+  }
+  .ps-dev-role {
+    width: 100%;
+    max-width: none;
+  }
+  .ps-actions {
+    margin-left: auto;
+  }
+}
+/* Keep native input semantics and keyboard behavior, with the measured blue borders. */
+.ps-choice input[type="radio"],
+.ps-check input[type="radio"],
+.ps-check input[type="checkbox"] {
+  appearance: none;
+  display: grid;
+  place-content: center;
+  background: #fff;
+  border: 1px solid #1684fc;
+  margin: 0;
+}
+.ps-choice input[type="radio"],
+.ps-check input[type="radio"] {
+  border-radius: 50%;
+}
+.ps-choice input[type="radio"]::before,
+.ps-check input[type="radio"]::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1684fc;
+  transform: scale(0);
+}
+.ps-choice input[type="radio"]:checked::before,
+.ps-check input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+.ps-check input[type="checkbox"] {
+  border-radius: 2px;
+}
+.ps-check input[type="checkbox"]:checked {
+  background: #1684fc;
+}
+.ps-check input[type="checkbox"]::before {
+  content: "";
+  width: 8px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translateY(-1px) rotate(-45deg);
+  opacity: 0;
+}
+.ps-check input[type="checkbox"]:checked::before {
+  opacity: 1;
+}
+select.ps-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%234a5568' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  background-position: right 18px center;
+  padding-right: 42px;
+}
+.ps-check svg,
+.ps-choice svg {
+  color: #4a5568;
+}
+/* Chromium's customizable select preserves native form/keyboard semantics while
+   matching the prototype's narrow 140x180 option surface. Older engines retain
+   the styled native select above. */
+@supports (appearance: base-select) {
+  select.ps-input,
+  select.ps-input::picker(select) {
+    appearance: base-select;
+  }
+  select.ps-input::picker-icon {
+    display: none;
+  }
+  select.ps-input::picker(select) {
+    width: 140px;
+    min-width: 140px;
+    min-height: 180px;
+    max-height: 180px;
+    margin-top: 0;
+    padding: 6px 0;
+    border: 0;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0 3px 10px #0002;
+    color: #0d1117;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  select.ps-input option {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 6px 16px;
+    line-height: 20px;
+  }
+  select.ps-input option::checkmark {
+    display: none;
+  }
+  select.ps-input option:checked {
+    color: #1684fc;
+    background: white;
+  }
+  select.ps-input option:hover,
+  select.ps-input option:focus-visible {
+    background: #f8f9fb;
+  }
+}
