@@ -119,3 +119,17 @@ export type Trace = {
   answer: string;
   ms: number;
 };
+
+/** Local UI preferences; notification delivery and vector search are not enabled by this model. */
+export type PersonalPreferences = {
+  avatar: "user" | "briefcase" | "graduation-cap" | "smile";
+  theme: "light" | "dark" | "system";
+  defaultLayout: "list" | "card";
+  compactSidebar: boolean;
+  searchMode: "hybrid" | "vector" | "keyword";
+  searchSort: "relevance" | "updated" | "popular";
+  searchPageSize: 10 | 20 | 50;
+  expandSynonyms: boolean;
+  notificationChannels: Array<"inbox" | "email" | "sms" | "wecom">;
+  notificationFrequency: "realtime" | "hourly" | "daily" | "off";
+};
