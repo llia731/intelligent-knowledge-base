@@ -71,6 +71,13 @@ function LibraryPage() {
   const updateDoc = useKb((s) => s.updateDoc);
   const restoreSeed = useKb((s) => s.restoreSeed);
   const canRestricted = useCan()("受限知识");
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const finish = () => setReady(true);
+    const unsubscribe = useKb.persist.onFinishHydration(finish);
+    if (useKb.persist.hasHydrated()) finish();
+    return unsubscribe;
+  }, []);
   const [query, setQuery] = useState("");
   const [collection, setCollection] = useState("全部");
   const [trash, setTrash] = useState(false);
@@ -160,7 +167,12 @@ function LibraryPage() {
     setTrash(false);
   }
   return (
-    <div className="library-page">
+    <fieldset
+      className="library-page"
+      disabled={!ready}
+      aria-busy={!ready}
+      aria-label="知识管理内容"
+    >
       <div className="head-row">
         <div>
           <h1 className="page-h">知识管理</h1>
@@ -686,7 +698,7 @@ function LibraryPage() {
           </form>
         </div>
       ) : null}
-    </div>
+    </fieldset>
   );
 }
 

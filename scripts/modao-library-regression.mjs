@@ -50,7 +50,10 @@ async function run(id, fn) {
     await p.screenshot({ path: path.join(out, `${id}-${name}-normalized.png`) });
     await style.evaluate((e) => e.remove());
   };
-  const go = async (url) => p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+  const go = async (url) => {
+    await p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+    await p.locator(".library-page:not([disabled])").waitFor();
+  };
   const state = () => p.evaluate(() => JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state);
   try {
     await fn({ p, r, shot, go, state, c });
@@ -74,6 +77,7 @@ const fixture = JSON.parse(
   await fs.readFile(new URL("./fixtures/modao-library-documents.json", import.meta.url), "utf8"),
 );
 async function installFixture(p) {
+  await p.locator(".library-page:not([disabled])").waitFor();
   await p.evaluate((items) => {
     const stored = JSON.parse(localStorage.getItem("zhishi-kb-v1"));
     stored.state.docs = items.map((item) => ({

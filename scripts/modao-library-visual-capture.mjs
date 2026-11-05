@@ -69,7 +69,7 @@ for (const kind of ["source", "react"].filter((k) => mode === "both" || mode ===
         document.body.append(host);
       });
     } else {
-      await p.locator(".library-layout").waitFor();
+      await p.locator(".library-page:not([disabled])").waitFor();
       if (process.env.IKB_LIBRARY_FIXTURE === "prototype") {
         const fixture = JSON.parse(
           await fs.readFile(
@@ -91,6 +91,7 @@ for (const kind of ["source", "react"].filter((k) => mode === "both" || mode ===
           localStorage.setItem("zhishi-kb-v1", JSON.stringify(stored));
         }, fixture);
         await p.reload({ waitUntil: "networkidle" });
+        await p.locator(".library-page:not([disabled])").waitFor();
         r.fixture =
           "Four original prototype filenames/categories/dates; synthetic content and permissions; no invented file size/tags/card sample counts";
       }
