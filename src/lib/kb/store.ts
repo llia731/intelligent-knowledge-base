@@ -416,7 +416,7 @@ export const useKb = create<KbState>()(
       shareDoc: (id, note) => {
                 set((s) => ({
           docs: s.docs.map((d) => (d.id === id ? { ...d, shareNote: note } : d)),
-          logs: [log(actor(get), "分享文档", get().docs.find((d) => d.id === id)?.title ?? id, "已记录附言"), ...s.logs],
+          logs: [log(actor(get), "保存推荐摘要", get().docs.find((d) => d.id === id)?.title ?? id, "已本地保存，未创建分享链接"), ...s.logs],
         }));
       },
       saveSettings: (settings) => {
