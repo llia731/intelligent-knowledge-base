@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /** UI-only interaction audit against localhost. Separate fresh browser state per case. */
+import { waitForAppReady } from "./modao-browser-ready.mjs";
 import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -50,7 +51,10 @@ async function run(id, fn) {
     await p.screenshot({ path: path.join(out, `${id}-${name}-normalized.png`) });
     await style.evaluate((e) => e.remove());
   };
-  const go = async (url) => p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+  const go = async (url) => {
+    await p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+    await waitForAppReady(p);
+  };
   const state = () => p.evaluate(() => JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state);
   try {
     await fn({ p, r, shot, go, state, c });
@@ -189,6 +193,7 @@ try {
     );
     assert.ok(s.logs[0].result.includes("未创建分享链接"));
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     await open(p);
     assert.equal(
       await p.getByLabel("推荐摘要", { exact: true }).inputValue(),
@@ -249,6 +254,7 @@ try {
     r.observations.whileOpen = await noLeaks(p, secret);
     assert.deepEqual(r.observations.whileOpen, emptyLeak);
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     assert.deepEqual(await noLeaks(p, secret), emptyLeak);
     await open(p);
     assert.equal(await p.getByLabel("访问密码", { exact: true }).inputValue(), "");
@@ -406,6 +412,7 @@ try {
     await p.getByRole("button", { name: "保存", exact: true }).click();
     await p.getByRole("cell", { name: "V15回归编辑后的文档", exact: true }).waitFor();
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     assert.ok((await state()).docs.some((d) => d.title === "V15回归编辑后的文档"));
     await open(p);
     await shot("share-after-edit");
@@ -433,6 +440,7 @@ try {
     await p.getByPlaceholder("知识库名称", { exact: true }).fill("V15回归合成知识库");
     await p.getByRole("button", { name: "创建", exact: true }).click();
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     assert.ok((await state()).collections.includes("V15回归合成知识库"));
     await shot("created");
   });

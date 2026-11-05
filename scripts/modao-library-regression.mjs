@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /** UI-only interaction audit against localhost. Separate fresh browser state per case. */
+import { waitForAppReady } from "./modao-browser-ready.mjs";
 import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -52,6 +53,7 @@ async function run(id, fn) {
   };
   const go = async (url) => {
     await p.goto(new URL(url, base).href, { waitUntil: "networkidle" });
+    await waitForAppReady(p);
     await p.locator(".library-page:not([disabled])").waitFor();
   };
   const state = () => p.evaluate(() => JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state);
@@ -92,6 +94,7 @@ async function installFixture(p) {
     localStorage.setItem("zhishi-kb-v1", JSON.stringify(stored));
   }, fixture);
   await p.reload({ waitUntil: "networkidle" });
+  await waitForAppReady(p);
 }
 try {
   await run("ssr-hydration-gate", async ({ p, r, shot }) => {
@@ -108,10 +111,7 @@ try {
     try {
       await p.goto(new URL("/library", base).href, { waitUntil: "commit" });
       await p.locator(".library-page[disabled]").waitFor();
-      const trigger = p
-        .locator("tbody tr")
-        .first()
-        .getByRole("button", { name: "分享", exact: true });
+      const trigger = p.locator('tbody tr button[aria-label="分享"]').first();
       assert.equal(
         await trigger.isDisabled(),
         true,
@@ -268,6 +268,7 @@ try {
     await p.getByLabel("分类", { exact: true }).fill("产品研发知识库");
     await p.getByRole("button", { name: "保存", exact: true }).click();
     await p.reload({ waitUntil: "networkidle" });
+    await waitForAppReady(p);
     assert.ok((await p.locator(".library-cover-meta").first().innerText()).includes("1 文档"));
     await shot("actual-local-count");
   });
