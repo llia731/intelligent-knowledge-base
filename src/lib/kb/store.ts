@@ -13,6 +13,7 @@ import type {
   ResourceLink,
   ReviewItem,
   Role,
+  PersonalPreferences,
   Sensitivity,
   Trace,
 } from "./types";
@@ -33,6 +34,7 @@ type KbState = {
   collections: string[];
   traces: Trace[];
   profile: { name: string; dept: string };
+  personalPreferences: PersonalPreferences;
   docs: KbDoc[];
   chats: Conversation[];
   activeChatId: string;
@@ -52,6 +54,7 @@ type KbState = {
   addCollection: (name: string) => void;
   addUser: (input: { name: string; email: string; dept: string }) => void;
   saveProfile: (profile: { name: string; dept: string }) => void;
+  savePersonalSettings: (profile: { name: string; dept: string }, preferences: PersonalPreferences) => void;
   recordTrace: (input: Omit<Trace, "id" | "at" | "actor">) => void;
   trashDocs: (ids: string[]) => void;
   restoreDocs: (ids: string[]) => void;
@@ -146,6 +149,13 @@ export const DEFAULT_CONNECTIONS: ResourceLink[] = [
   },
 ];
 
+export const DEFAULT_PERSONAL_PREFERENCES: PersonalPreferences = {
+  avatar: "user", theme: "light", defaultLayout: "list", compactSidebar: true,
+  searchMode: "hybrid", searchSort: "relevance", searchPageSize: 10,
+  expandSynonyms: true, notificationChannels: ["inbox", "email"],
+  notificationFrequency: "hourly",
+};
+
 const initialChat = welcomeChat();
 
 export const useKb = create<KbState>()(
@@ -161,6 +171,7 @@ export const useKb = create<KbState>()(
       collections: [],
       traces: [],
       profile: { name: "当前用户", dept: "产品部" },
+      personalPreferences: DEFAULT_PERSONAL_PREFERENCES,
       docs: SEED_DOCS,
       chats: [initialChat],
       activeChatId: initialChat.id,
@@ -235,6 +246,12 @@ export const useKb = create<KbState>()(
         set((s) => ({
           profile,
           logs: [log(profile.name || "当前用户", "更新个人资料", profile.dept, "成功"), ...s.logs],
+        })),
+      savePersonalSettings: (profile, preferences) =>
+        set((s) => ({
+          profile,
+          personalPreferences: preferences,
+          logs: [log(profile.name || "当前用户", "保存个人设置", profile.dept, "成功"), ...s.logs],
         })),
       recordTrace: (input) =>
         set((s) => ({
@@ -509,6 +526,7 @@ export const useKb = create<KbState>()(
           collections: saved.collections ?? [],
           traces: saved.traces ?? [],
           profile: saved.profile ?? current.profile,
+          personalPreferences: { ...DEFAULT_PERSONAL_PREFERENCES, ...(saved.personalPreferences ?? {}) },
           acl: saved.acl ?? {},
           can: current.can,
         };
