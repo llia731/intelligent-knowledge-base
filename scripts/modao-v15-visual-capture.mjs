@@ -44,31 +44,29 @@ async function capture(id) {
   });
   await p.evaluate(() => document.fonts.ready);
   await p.screenshot({ path: path.join(out, id + ".png"), caret: "initial" });
-  const meta = await p
-    .locator(".sd-dialog")
-    .evaluate((el) => ({
-      bounds: el.getBoundingClientRect().toJSON(),
-      text: el.innerText,
-      elements: [
-        ...el.querySelectorAll(
-          ".sd-header,.sd-enable,.sd-range,.sd-scopes,.sd-scope,.sd-department,.sd-cols,.sd-field,.sd-input,.sd-input-wrap,.sd-link-input,.sd-channel-buttons,.sd-summary,.sd-footer,.sd-service-notice,legend,input,select,textarea,button,small",
-        ),
-      ].map((e) => ({
-        tag: e.tagName,
-        cls: e.className,
-        label: e.getAttribute("aria-label"),
-        text: e.innerText,
-        rect: e.getBoundingClientRect().toJSON(),
-        fontSize: getComputedStyle(e).fontSize,
-        lineHeight: getComputedStyle(e).lineHeight,
-        color: getComputedStyle(e).color,
-        background: getComputedStyle(e).backgroundColor,
-        border: getComputedStyle(e).border,
-        borderRadius: getComputedStyle(e).borderRadius,
-        disabled: e.disabled ?? null,
-        value: e.type === "password" ? "[redacted]" : (e.value ?? null),
-      })),
-    }));
+  const meta = await p.locator(".sd-dialog").evaluate((el) => ({
+    bounds: el.getBoundingClientRect().toJSON(),
+    text: el.innerText,
+    elements: [
+      ...el.querySelectorAll(
+        ".sd-header,.sd-enable,.sd-range,.sd-scopes,.sd-scope,.sd-department,.sd-cols,.sd-field,.sd-input,.sd-input-wrap,.sd-link-input,.sd-channel-buttons,.sd-summary,.sd-footer,.sd-service-notice,legend,input,select,textarea,button,small",
+      ),
+    ].map((e) => ({
+      tag: e.tagName,
+      cls: e.className,
+      label: e.getAttribute("aria-label"),
+      text: e.innerText,
+      rect: e.getBoundingClientRect().toJSON(),
+      fontSize: getComputedStyle(e).fontSize,
+      lineHeight: getComputedStyle(e).lineHeight,
+      color: getComputedStyle(e).color,
+      background: getComputedStyle(e).backgroundColor,
+      border: getComputedStyle(e).border,
+      borderRadius: getComputedStyle(e).borderRadius,
+      disabled: e.disabled ?? null,
+      value: e.type === "password" ? "[redacted]" : (e.value ?? null),
+    })),
+  }));
   await fs.writeFile(path.join(out, id + "-geometry.json"), JSON.stringify(meta, null, 2));
   report.results.push({ id, bounds: meta.bounds });
   await style.evaluate((e) => e.remove());
@@ -89,6 +87,7 @@ try {
     .fill(
       "推荐一份 RAG 实践指南，涵盖了文档解析、向量化、检索排序与提示工程等关键环节，适合团队快速上手。",
     );
+  await p.locator(".sd-header").click(); // Match the prototype unfocused textarea state by a real mouse click.
   await capture("source-summary-draft");
   await p.getByLabel("有效期", { exact: true }).click();
   await capture("expiry-menu");
