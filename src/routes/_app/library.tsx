@@ -4,6 +4,7 @@ import { collectionNames } from "@/lib/kb/collections";
 import { useKb } from "@/lib/kb/store";
 import { useCan } from "@/lib/kb/use-can";
 import type { KbDoc } from "@/lib/kb/types";
+import { ShareDocumentDialog } from "@/components/kb/share-document-dialog";
 
 export const Route = createFileRoute("/_app/library")({ component: LibraryPage });
 
@@ -16,7 +17,6 @@ function LibraryPage() {
   const trashDocs = useKb((s) => s.trashDocs);
   const removeDoc = useKb((s) => s.removeDoc);
   const restoreDocs = useKb((s) => s.restoreDocs);
-  const shareDoc = useKb((s) => s.shareDoc);
   const updateDoc = useKb((s) => s.updateDoc);
   const restoreSeed = useKb((s) => s.restoreSeed);
   const canRestricted = useCan()("受限知识");
@@ -27,7 +27,6 @@ function LibraryPage() {
   const [picked, setPicked] = useState<string[]>([]);
   const [active, setActive] = useState<KbDoc | null>(null);
   const [dialog, setDialog] = useState<"view" | "edit" | "share" | null>(null);
-  const [note, setNote] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
   const [editCollection, setEditCollection] = useState("");
@@ -76,7 +75,6 @@ function LibraryPage() {
   function openDoc(doc: KbDoc, next: "view" | "edit" | "share") {
     setActive(doc);
     setDialog(next);
-    setNote(doc.shareNote);
     setEditTitle(doc.title);
     setEditBody(doc.content);
     setEditCollection(doc.collection);
@@ -225,17 +223,18 @@ function LibraryPage() {
         </div>
       ) : null}
 
-      {active && dialog ? (
+      <ShareDocumentDialog doc={active} open={dialog === "share" && Boolean(active)} onOpenChange={(open) => { if (!open) setDialog(null); }} />
+
+      {active && dialog && dialog !== "share" ? (
         <div className="overlay" onClick={() => setDialog(null)}>
           <form className="modal" onClick={(e) => e.stopPropagation()} onSubmit={(event) => {
             event.preventDefault();
-            if (dialog === "share") shareDoc(active.id, note.trim());
             if (dialog === "edit") {
               updateDoc(active.id, { title: editTitle, content: editBody, collection: editCollection, sensitivity: editLevel });
             }
             setDialog(null);
           }}>
-            <h2 className="text-lg font-semibold">{dialog === "share" ? "分享文档" : dialog === "edit" ? "编辑文档" : active.title}</h2>
+            <h2 className="text-lg font-semibold">{dialog === "edit" ? "编辑文档" : active.title}</h2>
             <p className="page-sub">{active.collection} · {LEVEL[active.sensitivity]} · {active.owner}</p>
             {dialog === "edit" ? (
               <>
@@ -253,14 +252,8 @@ function LibraryPage() {
             ) : (
               <p className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap text-sm leading-6">{active.content}</p>
             )}
-            {dialog === "share" && active.status !== "trashed" ? (
-              <label className="mt-3 block text-sm">分享附言
-                <textarea className="area mt-1" value={note} onChange={(e) => setNote(e.target.value)} />
-              </label>
-            ) : null}
-            {dialog === "share" && active.shareNote ? <p className="note mt-2">已有附言：{active.shareNote}</p> : null}
             <div className="mt-4 flex gap-2">
-              {dialog !== "view" && active.status !== "trashed" ? <button className="btn" type="submit">{dialog === "share" ? "保存分享附言" : "保存"}</button> : null}
+              {dialog === "edit" && active.status !== "trashed" ? <button className="btn" type="submit">保存</button> : null}
               <button className="btn ghost" type="button" onClick={() => setDialog(null)}>关闭</button>
             </div>
           </form>
