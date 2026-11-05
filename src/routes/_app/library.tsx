@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { BookOpenText, Headset, ShieldCheck } from "lucide-react";
+import "./library-visual.css";
 import { collectionNames } from "@/lib/kb/collections";
 import { useKb } from "@/lib/kb/store";
 import { useCan } from "@/lib/kb/use-can";
@@ -67,9 +69,9 @@ function LibraryPage() {
   }), [docs, trash, canRestricted, collection, query, line, level, kind, tag]);
 
   const cards = [
-    { name: "产品研发知识库", desc: "覆盖产品规划、需求文档、技术方案与迭代记录。", level: "全员可读", meta: "128 文档 · 2.4 GB" },
-    { name: "客户支持知识库", desc: "FAQ、工单处理话术、售后流程与典型案例。", level: "内部", meta: "86 文档 · 1.1 GB" },
-    { name: "内部规章制度", desc: "人事、财务、信息安全与合规相关政策文件。", level: "内部", meta: "34 文档 · 320 MB" },
+    { name: "产品研发知识库", desc: "覆盖产品规划、需求文档、技术方案与迭代记录。", level: "全员可读", tone: "blue", icon: BookOpenText },
+    { name: "客户支持知识库", desc: "FAQ、工单处理话术、售后流程与典型案例。", level: "内部", tone: "purple", icon: Headset },
+    { name: "内部规章制度", desc: "人事、财务、信息安全与合规相关政策文件。", level: "内部", tone: "green", icon: ShieldCheck },
   ];
 
   function openDoc(doc: KbDoc, next: "view" | "edit" | "share") {
@@ -95,8 +97,8 @@ function LibraryPage() {
         <button type="button" className="btn" onClick={() => setCreating(true)}>新建知识库</button>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[220px_minmax(0,1fr)]">
-        <aside className="card h-fit p-4">
+      <div className="library-layout grid gap-4 xl:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="library-sidebar card h-fit p-4">
           <h2 className="text-sm font-semibold">分类导航</h2>
           <FilterGroup title="业务线" value={line} onChange={setLine} options={["研发", "产品", "运营", "市场"]} />
           <FilterGroup title="密级" value={level} onChange={setLevel} options={["公开", "内部", "机密"]} />
@@ -119,24 +121,31 @@ function LibraryPage() {
           </div>
         </aside>
         <div>
-          <section className="card p-4">
+          <section className="library-collections card p-4">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-base font-semibold">知识库列表</h2>
               <button type="button" className="text-sm text-[var(--m-blue)]" onClick={() => setNotice("卡片数量为原型示例。下方表格是本地知识库里的真实文档。")}>查看全部</button>
             </div>
             <div className="grid gap-3 md:grid-cols-3">
-              {cards.map((card) => (
-                <article key={card.name} className="rounded-xl bg-[var(--m-paper)] p-3">
-                  <div className="flex items-center justify-between"><h3 className="text-sm font-semibold">{card.name}</h3><span className="tag">{card.level}</span></div>
-                  <p className="mt-2 text-xs text-[var(--m-sub)]">{card.desc}</p>
-                  <p className="mt-2 text-xs">{card.meta}</p>
-                </article>
-              ))}
+              {cards.map((card) => {
+                const Icon = card.icon;
+                const count = docs.filter((doc) => doc.collection === card.name && doc.status !== "trashed").length;
+                return (
+                  <article key={card.name} className="library-cover-card" data-tone={card.tone}>
+                    <div className="library-cover" aria-hidden="true"><Icon size={30} strokeWidth={1.8}/></div>
+                    <div className="library-cover-body">
+                      <div className="library-cover-heading"><h3>{card.name}</h3><span className="tag">{card.level}</span></div>
+                      <p>{card.desc}</p>
+                      <span className="library-cover-meta">本地文档 {count} 篇</span>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
             {collections.length > 0 ? <p className="note mt-2">已创建：{collections.join("、")}</p> : null}
           </section>
 
-          <section className="card mt-4 p-4">
+          <section className="library-documents card mt-4 p-4">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-base font-semibold">文档管理</h2>
               <div className="seg">
@@ -153,7 +162,7 @@ function LibraryPage() {
               <button type="button" className="btn ghost" onClick={() => setPicked(picked.length === rows.length ? [] : rows.map((doc) => doc.id))}>全选</button>
               <button type="button" className="btn ghost" disabled={!picked.length || trash} onClick={() => { trashDocs(picked); setPicked([]); }}>删除</button>
               <button type="button" className="btn ghost" disabled={!picked.length || !trash} onClick={() => { restoreDocs(picked); setPicked([]); }}>恢复</button>
-              <button type="button" className="btn ghost" onClick={() => setNotice("移动、打标签、改分类、导出尚未接入独立服务，当前只支持删除、恢复、编辑和分享附言。")}>打标签</button>
+              <button type="button" className="btn ghost" onClick={() => setNotice("移动、打标签、改分类、导出尚未接入独立服务；当前支持删除、恢复、编辑和本地推荐摘要保存，不代表真实链接分享。")}>打标签</button>
             </div>
             {notice ? <p className="note mb-2">{notice}</p> : null}
             {view === "列表" ? (
