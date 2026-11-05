@@ -1,0 +1,900 @@
+{
+  "prototypeZipSha256": "8c585bc0e158a22603410dc2578bf6fe9b6e6207285b124dd4eaf45c0646603b",
+  "captureGeometrySha256": "8dff5c2e2df4de97d0ebf544be47f5a1306e54918aed3ef2a178c4b6da7fe512",
+  "source": "original ZIP running offline; SVG/gradient payloads embedded in its data JS; no standalone illustration image in ZIP",
+  "assets": [
+    {
+      "file": "cover-blue.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVUbxqVY6VCyeuf4CJFr",
+      "rect": {
+        "x": 904.640625,
+        "y": 245,
+        "width": 40,
+        "height": 40,
+        "top": 245,
+        "right": 944.640625,
+        "bottom": 285,
+        "left": 904.640625
+      },
+      "sourceSvgSha256": "717463a680ef9220fa8aede19880b8b2a79c4494ba61d817ceaac95ff1df5f98",
+      "sha256": "443c0234694c101affb2d239b93d4839e635da3dd79672daf5960d327ea0e1c2",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "c92c13252d7ec840e4af08df421b9acb19c6ba308e35c39eb848e5c725e6112d",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "cover-purple.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVUbxqVY6VKPRAVsU6cL",
+      "rect": {
+        "x": 1227.96875,
+        "y": 245,
+        "width": 40,
+        "height": 40,
+        "top": 245,
+        "right": 1267.96875,
+        "bottom": 285,
+        "left": 1227.96875
+      },
+      "sourceSvgSha256": "3baf11de6c49373098c93577178c22ed88a40303d65de705904b599735248201",
+      "sha256": "e1255f12ceff0c9f5837c47e4ede89020232b52ec96f95322d1f63dea71e7c08",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "696fa805c9b88818fa4667d53bc58e3d3c48f5c36ac4ea02dd7a651264044882",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "cover-green.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVUbxqVY6VWX11Eh8bpB",
+      "rect": {
+        "x": 1551.296875,
+        "y": 245,
+        "width": 40,
+        "height": 40,
+        "top": 245,
+        "right": 1591.296875,
+        "bottom": 285,
+        "left": 1551.296875
+      },
+      "sourceSvgSha256": "fd08c311db968679fc871cb4ea87c60c7458741f65fd7fe861539d876a004d15",
+      "sha256": "0d467d1c95520079228f84ab8617a487fa106454d98fb1166e3263171e6bd7eb",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "68715d4c90fcbffcfafca8b0074cf4add719bd6bfee84ebc06836401c8ed2806",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "folder.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSk5TXTuy",
+      "rect": {
+        "x": 462,
+        "y": 187,
+        "width": 16,
+        "height": 16,
+        "top": 187,
+        "right": 478,
+        "bottom": 203,
+        "left": 462
+      },
+      "sourceSvgSha256": "3ff59cfe08cb54dd70293c2fef602df471272f31426952caded7283df204b7cb",
+      "sha256": "3349c4193632b756aec6786de8597194e7bee8fa712a282223ce655c62c642d5",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "d5a3b3429282f220b872a6fae7be96d84e2df9b82228b04f33c2096b90aa1520",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "tags.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSgTaWW0W",
+      "rect": {
+        "x": 462,
+        "y": 873,
+        "width": 16,
+        "height": 16,
+        "top": 873,
+        "right": 478,
+        "bottom": 889,
+        "left": 462
+      },
+      "sourceSvgSha256": "b1b1404b80d9827b015b4003ed78874e3ff0f28744e2404b674514d9da0abf3d",
+      "sha256": "d44d6c6982460c39fdea66ead46dbd69acae8265fc65624b22383494a5202b13",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "5a4e8357b001e406b484e0a23052850782de03dbbbb67c1ccda7586ad725eb47",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "development.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSbzGVjXW",
+      "rect": {
+        "x": 470,
+        "y": 250,
+        "width": 14,
+        "height": 14,
+        "top": 250,
+        "right": 484,
+        "bottom": 264,
+        "left": 470
+      },
+      "sourceSvgSha256": "be412e25879fab9d294de80f008b1465d19995cf9134dc71df0b5240a480b11f",
+      "sha256": "7789d72de59e24b38e6df848a68aadbc324f40467e7676576b616400ca43e26e",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "070f9ad9947b8d0bd776fbf23763946876d444a4a58d23ad0bff26f38284e852",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "product.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSM8iLPyC",
+      "rect": {
+        "x": 470,
+        "y": 286,
+        "width": 14,
+        "height": 14,
+        "top": 286,
+        "right": 484,
+        "bottom": 300,
+        "left": 470
+      },
+      "sourceSvgSha256": "d99cb056a5e2686a405d9dcba23d636a4ad02f696e9ff1a02d756f8d03842f4f",
+      "sha256": "346cdffafac328c3fd866152668806f7f1c1396be34b3a4c38445b10b66bbc2c",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "7fa99fc39bfafc0f89b90ab98eec4771369f4d70b2a9b4ea11071abd94ece8a8",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "operations.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSyVL7sg0",
+      "rect": {
+        "x": 470,
+        "y": 322,
+        "width": 14,
+        "height": 14,
+        "top": 322,
+        "right": 484,
+        "bottom": 336,
+        "left": 470
+      },
+      "sourceSvgSha256": "f39fe263ba5454b0735b44c0b4642bd165b8c9875a36cbf217138c8dfa97a5c3",
+      "sha256": "8cde385385d2772a898edb54003e4875799e204005dabc533b9f59eb3fd43120",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "5bf2fe301f9fad3071b6abc1a98eb67ab44cbe79b4f4bf37512bee43132a87eb",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "marketing.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSW2RzImW",
+      "rect": {
+        "x": 470,
+        "y": 358,
+        "width": 14,
+        "height": 14,
+        "top": 358,
+        "right": 484,
+        "bottom": 372,
+        "left": 470
+      },
+      "sourceSvgSha256": "5dc216e39d90fba43401229f85214262d53fbedae1ca4147cff15b9c0429f647",
+      "sha256": "b3aefd87c6f567f0020d1ab4260bbe39bbf9ec561905d80fa3ae8c621cfa8a67",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "7a28b763407978161c525766123245b1644a940524c4a5f60868521020faf7a4",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "project-alpha.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSaqKRMSr",
+      "rect": {
+        "x": 470,
+        "y": 430,
+        "width": 14,
+        "height": 14,
+        "top": 430,
+        "right": 484,
+        "bottom": 444,
+        "left": 470
+      },
+      "sourceSvgSha256": "7bf68fd4029c79b868864b5b01389ce157ab5e004f465d621d5524124f6c358f",
+      "sha256": "b6feecd92ce02e08d027040c9c5a424dee58bec57cd95c106e0c8de15d435129",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "5fdb8f07f6a20a89996e4588015e4ab5a03a026af251d4ad8c77c988552a8f5d",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "project-beta.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSJujdkrh",
+      "rect": {
+        "x": 470,
+        "y": 466,
+        "width": 14,
+        "height": 14,
+        "top": 466,
+        "right": 484,
+        "bottom": 480,
+        "left": 470
+      },
+      "sourceSvgSha256": "b10e9541ddfcb732cabd94ef9c20182c7d925a9c702944010c62be5d7696257b",
+      "sha256": "25ad28444359d18844d3b9271889c3ac5e2704804cb9c16d8a7b71bb199757eb",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "9a15527addd1898be74172fc4bc9c820cbc5d79ae0046507ad101e0e6e2e9a7e",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "public.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSK5e9sNQ",
+      "rect": {
+        "x": 470,
+        "y": 538,
+        "width": 14,
+        "height": 14,
+        "top": 538,
+        "right": 484,
+        "bottom": 552,
+        "left": 470
+      },
+      "sourceSvgSha256": "1cd810195f0ebd1285a812cc002c91c51adff1c3fb15579b55e89cf7822589fe",
+      "sha256": "376775a043466b77bd437c17623973452edb43435e0b1cd6e690334d551d0c9c",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "0efe2a3d8dff70cf2ccf35e4bf5b043449123e06761cc5be60fa7f8a7b80e013",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "internal.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSOACyLJC",
+      "rect": {
+        "x": 470,
+        "y": 574,
+        "width": 14,
+        "height": 14,
+        "top": 574,
+        "right": 484,
+        "bottom": 588,
+        "left": 470
+      },
+      "sourceSvgSha256": "b5cc000d0e61581318794c171458c636c6c588e10251b2bb36003e94ae361c27",
+      "sha256": "d2b204443a77572d361267e06984653ff6b25a8ed5e824fa7b231324120e95cc",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "4aa7b10cf6926082a943afb9f677561a11eb64576a1191318656523afba5a9c2",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "restricted.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSjz5IXeX",
+      "rect": {
+        "x": 470,
+        "y": 610,
+        "width": 14,
+        "height": 14,
+        "top": 610,
+        "right": 484,
+        "bottom": 624,
+        "left": 470
+      },
+      "sourceSvgSha256": "c59bfe5420de71143efefa9bf9d2e230cf8e80de062664ea0c410ba4c63e916b",
+      "sha256": "85215efd2a5f83a2e7456db26f8b3b83529a5c39e97d6352e18294469ec5507a",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "d20e3795c5667824ccbb1e96f793fc83dfd1835caf93fb1d9680702327f96375",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "pdf.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSDg5oPcU",
+      "rect": {
+        "x": 470,
+        "y": 682,
+        "width": 14,
+        "height": 14,
+        "top": 682,
+        "right": 484,
+        "bottom": 696,
+        "left": 470
+      },
+      "sourceSvgSha256": "ff536f6cd09d306805808f1b5d53344b628334022115f4b3313f7fbe1b35f5e2",
+      "sha256": "a8c291dc5879156f595550e0ffcde27fdc41c116bcb78a8564ea1b22131504a0",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "c88a411d171f35e68fd7b8deac1cae6a990f44a5d3c8c01034826acdcde5b126",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "word.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSEFYIbAs",
+      "rect": {
+        "x": 470,
+        "y": 718,
+        "width": 14,
+        "height": 14,
+        "top": 718,
+        "right": 484,
+        "bottom": 732,
+        "left": 470
+      },
+      "sourceSvgSha256": "0203e353d7054ce6e32d1f50954336cdc0543cf81f8fb7f1db186d6a617e33b2",
+      "sha256": "ad55caa054997818359b1ce23d558485652fa37bfb24deb3da386d1d33efca97",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "1c3053d62579b680807da79281eea43e72c04d97a2e1aa0c7bf4e3a29f731e6e",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "markdown.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSDtdfYoG",
+      "rect": {
+        "x": 470,
+        "y": 754,
+        "width": 14,
+        "height": 14,
+        "top": 754,
+        "right": 484,
+        "bottom": 768,
+        "left": 470
+      },
+      "sourceSvgSha256": "cac237ee3515bd061d31ed7db5d443ad1cf716656640b1e4c80b6313d5c99408",
+      "sha256": "711cd3a4ebf7cba424f869a4ba25d544a96ab3dfb974e178025020ede60f39dd",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "68582450f89ae5c45ca93e53a5549a293fcb4cb25b3b8e1706ca2380f8b0ff30",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "web.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPS6Hf0sjD",
+      "rect": {
+        "x": 470,
+        "y": 790,
+        "width": 14,
+        "height": 14,
+        "top": 790,
+        "right": 484,
+        "bottom": 804,
+        "left": 470
+      },
+      "sourceSvgSha256": "a5bf698e62731805c648eaa5073063a40d9aa5ece27a8670420a89fd5e41f1ab",
+      "sha256": "dda5ba65b7cc8d17d0a61b131c3136ff5ac3f1f9772e060a7d8b2017bff6d668",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "cf7becc5ff43a5897eff5fada244527dab16f33935a0ef99f0a33a5e978bed27",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "documents.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSUbaZJhs",
+      "rect": {
+        "x": 787.96875,
+        "y": 390,
+        "width": 14,
+        "height": 14,
+        "top": 390,
+        "right": 801.96875,
+        "bottom": 404,
+        "left": 787.96875
+      },
+      "sourceSvgSha256": "aff8ef5558bd7bf6fdd0fa69bed60437d06c2a5ec830be1283867b344f6285d5",
+      "sha256": "1b6dc50e561617d4ef66bef2072cb3fbc78d0dd0978c23905081908a6c885b3a",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "68695b940e0c06f52a65643dff9217b60107d9ee5cbd74522488f862c862750b",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "storage.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSpUd16ex",
+      "rect": {
+        "x": 1004.625,
+        "y": 390,
+        "width": 14,
+        "height": 14,
+        "top": 390,
+        "right": 1018.625,
+        "bottom": 404,
+        "left": 1004.625
+      },
+      "sourceSvgSha256": "e6f66148c58407fb7058772f924098b8cd709aa94de334d6fc5f3abf064c1208",
+      "sha256": "986869427bdafa861a79982da31cedd92474f49d381a9febb14f3326252bc0cf",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "7ff2d7f41e29f6710684493d3690ba447719c92848a539a02f9ba9bdf56e34b7",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "view.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wrVY6UbmVY6UnPSIp0tuh4",
+      "rect": {
+        "x": 1589.984375,
+        "y": 634.75,
+        "width": 16,
+        "height": 16,
+        "top": 634.75,
+        "right": 1605.984375,
+        "bottom": 650.75,
+        "left": 1589.984375
+      },
+      "sourceSvgSha256": "657ef7226f23a7dcfe3c54a2f455f1067fd622e0c158459f4c5bee1bbee5f431",
+      "sha256": "e8127d6d355ef605d227e9dc15b578a0a80c1d99fe44b09d7f231650fba62401",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "2a193885d8a021a93dba83c2514b75b9f2a6e692164afa39f8f75dbed51d4f5b",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "share.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wrVY6UbmVY6UnPStuploNO",
+      "rect": {
+        "x": 1621.984375,
+        "y": 634.75,
+        "width": 16,
+        "height": 16,
+        "top": 634.75,
+        "right": 1637.984375,
+        "bottom": 650.75,
+        "left": 1621.984375
+      },
+      "sourceSvgSha256": "84a148470edf8a065cd286843c39bf526dacc6ee7d69371321ca0fcce2223a16",
+      "sha256": "040f26d6284109ab1d9ee8d61900dc80684d90b70b19aeb7a94566474ca088a3",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "01ee55b72b430e306c0ddfd252d98fc77d77017a44276f8f1fdbe670b1f0195d",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "edit.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wrVY6UbmVY6UnPSMDlYPmh",
+      "rect": {
+        "x": 1653.984375,
+        "y": 634.75,
+        "width": 16,
+        "height": 16,
+        "top": 634.75,
+        "right": 1669.984375,
+        "bottom": 650.75,
+        "left": 1653.984375
+      },
+      "sourceSvgSha256": "a60141e54a538b6c13f9843e9ce3b5ece11bddd313f2749bde219a8adb580b28",
+      "sha256": "b8bf14561e7fbf00aa83aab40e0533c4121403993f89c77232c4d04d35f49151",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "a72b42f60f0c1c5cbb76f01ebb75de27b05165ad9aa24c3b58d4672034c715d7",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "delete.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wrVY6UbmVY6UnPSGQ87T7K",
+      "rect": {
+        "x": 1685.984375,
+        "y": 634.75,
+        "width": 16,
+        "height": 16,
+        "top": 634.75,
+        "right": 1701.984375,
+        "bottom": 650.75,
+        "left": 1685.984375
+      },
+      "sourceSvgSha256": "b5edb3ddd7bf7c3a72fdef0a53cf4abff04d2a71fce0521daee0341b126ff772",
+      "sha256": "8dc89c5aac4116a6699992fb5ac5e3665a592a2d6f498c166466f9e661406808",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "192b2a0c2206a7318736072b1fed474848846e072b9acc9879562415b1c98c3a",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "file-pdf.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wicVY6UbVY6UnPSaEEF4h6",
+      "rect": {
+        "x": 832.984375,
+        "y": 637.25,
+        "width": 16,
+        "height": 16,
+        "top": 637.25,
+        "right": 848.984375,
+        "bottom": 653.25,
+        "left": 832.984375
+      },
+      "sourceSvgSha256": "5c6221828cd84eb039f8fdf0a024bcf4076ee40e194b8421dd22ce8872f08d9d",
+      "sha256": "388ec37ad31233215ff0c2a795db009fb9bfe1440bcc6ea8829dea47de2cd4a0",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "7464930bb16b741036f33699531b88f036da90a40622fe195f11e1ffd899cbe9",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "file-markdown.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wicVY6UbVY6UnPSKqmEbtc",
+      "rect": {
+        "x": 832.984375,
+        "y": 702.796875,
+        "width": 15.578125,
+        "height": 16,
+        "top": 702.796875,
+        "right": 848.5625,
+        "bottom": 718.796875,
+        "left": 832.984375
+      },
+      "sourceSvgSha256": "7e88d47cb7aba3a34c01c9b4d2dbef3e56236b804cb8697e6b10a04f25d644a6",
+      "sha256": "b6668ee593b2831c79209991e1d977c7f7c1c758692e3a0e3086a240ba1d3d60",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "ab98221bcbbecee389f332334a7556ca884fc4b5b4429b07f5349b21e5f7c04b",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "file-word.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wicVY6UbVY6UnPSLm1Jh8r",
+      "rect": {
+        "x": 832.984375,
+        "y": 768.109375,
+        "width": 15.875,
+        "height": 16,
+        "top": 768.109375,
+        "right": 848.859375,
+        "bottom": 784.109375,
+        "left": 832.984375
+      },
+      "sourceSvgSha256": "88b2fbbf26cff8d8103f1a33159ddc32bd341480c18275c955407a161f6ec974",
+      "sha256": "88be20d16f130dfc6bafda0f2f6c3e999e4014e0178d63878494f61c6d9ed883",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "cace0d797197a7581a7f6f096bb2f6bb77b841a312a2ec8b2fddd642a27dec85",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "file-web.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbVY6XhfSu6530or/wicVY6UbVY6UnPSrEDn8JL",
+      "rect": {
+        "x": 832.984375,
+        "y": 833.109375,
+        "width": 14.578125,
+        "height": 16,
+        "top": 833.109375,
+        "right": 847.5625,
+        "bottom": 849.109375,
+        "left": 832.984375
+      },
+      "sourceSvgSha256": "44c2767128e1aa859bc65dc1e4724714f106747e7d79d893f0a7cc7ac9be3c57",
+      "sha256": "69f74a2da6d2b2681e2e1f2aca4858d27caec2a2f5b7e8b184d8254f6ffc408c",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "2a89954746347635ddbc9ae48f2c6f92bd8c3c086f0c2db05e56eccbc7a1e0d6",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "trash.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSH8t6X9g",
+      "rect": {
+        "x": 799.984375,
+        "y": 982.125,
+        "width": 24,
+        "height": 24,
+        "top": 982.125,
+        "right": 823.984375,
+        "bottom": 1006.125,
+        "left": 799.984375
+      },
+      "sourceSvgSha256": "a46cfd49ab363609a853daf8b99ebedbf114b1abc28d34e46cf8a96c82e74cd9",
+      "sha256": "b5e7df918f50098258ba44d25db76ff5f95bac818463a40bef0a5853f61d0c4e",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "335bf5d91a6b83710eb53b3c60ffa2b8d25e3154b6c22c67204a58d39ea373f9",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "history.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPSKRiiMhj",
+      "rect": {
+        "x": 1284.984375,
+        "y": 982.125,
+        "width": 24,
+        "height": 24,
+        "top": 982.125,
+        "right": 1308.984375,
+        "bottom": 1006.125,
+        "left": 1284.984375
+      },
+      "sourceSvgSha256": "92aae997fd340e8f21e671f7b2fd9a6c1bb8855033f0d72b5998cefdbb24bea0",
+      "sha256": "c15dae2cd2b8e3dba9077d828ca2aac2f5c21dcabd7d9f3bf4f3d89a5e12d006",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "cde800af57eadb5fedc337bd0d7653d0652494bd1526c5d847f1731dc2098bc7",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "chevron-right.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPShLJC2cr",
+      "rect": {
+        "x": 1202.984375,
+        "y": 984.125,
+        "width": 20,
+        "height": 20,
+        "top": 984.125,
+        "right": 1222.984375,
+        "bottom": 1004.125,
+        "left": 1202.984375
+      },
+      "sourceSvgSha256": "712772220b618955eea8915a20d17427ab2d8e217442d14fe84ea355b309f951",
+      "sha256": "332fec1d41fddb97add676386aac224c48a08e0cd514b3e3aa14b4f2749a12ca",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "17fef183e49ee43537a3e089779130c90a7f8c74e00ba23fb3f8553c35f1539c",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "plus.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wicVY6UbVY6UnPStnIMQYa",
+      "rect": {
+        "x": 1615,
+        "y": 118,
+        "width": 16,
+        "height": 16,
+        "top": 118,
+        "right": 1631,
+        "bottom": 134,
+        "left": 1615
+      },
+      "sourceSvgSha256": "f4b765db2c3f6d9b316dcdca01a5b56e565394c2c4e979df60553a2f93fd9a9c",
+      "sha256": "d7a376f6ba51561e8aae0dc3cc941178b85de75f2ebcd77cd27dbc3d29ecfa6c",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "1556ce678a2d7fdcb1dd4d949893f1071c61028199d2bc5a0a820fb2ebb4290c",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "move.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbtVY6UbVY6UnPScxbg64k",
+      "rect": {
+        "x": 1301.984375,
+        "y": 529.984375,
+        "width": 70,
+        "height": 30,
+        "top": 529.984375,
+        "right": 1371.984375,
+        "bottom": 559.984375,
+        "left": 1301.984375
+      },
+      "sourceSvgSha256": "548afbff1b2b436623307da41124e57a033baf52075f43dbd5d282bc8f024067",
+      "sha256": "96a488dce8a54dd39fb9091bca0f5fc27693443feb66937b2f72385db3d261a4",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "8012db1d69bde3062b58b61915f200d699d07db487242c1afdd1b04f75f6e47c",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "export.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbtVY6UbVY6UnPSmO63yb4",
+      "rect": {
+        "x": 1637.984375,
+        "y": 529.984375,
+        "width": 70,
+        "height": 30,
+        "top": 529.984375,
+        "right": 1707.984375,
+        "bottom": 559.984375,
+        "left": 1637.984375
+      },
+      "sourceSvgSha256": "5037804b9a6530b93b7149d744dba6e8187f564d17920471c8c0999e2a2ffd3f",
+      "sha256": "a9dbe14557fbf72f050fc93f3bd1789317619f9fb306dcac7f9cddc89231d5fa",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "75cbd9a76723fde8837ed098b60f8e91185099e80c881b3208657798059e47c4",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "tag.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbtVY6UbVY6UnPSjuDNg3l",
+      "rect": {
+        "x": 1457.984375,
+        "y": 529.984375,
+        "width": 82,
+        "height": 30,
+        "top": 529.984375,
+        "right": 1539.984375,
+        "bottom": 559.984375,
+        "left": 1457.984375
+      },
+      "sourceSvgSha256": "7c73aa0b5718effdc56314f47c905b68fda2da1bd0d65acbc374e443dcc99e6e",
+      "sha256": "6e98c6d468d5caf5fb304ea20e760854f3adfe4a9f166421937b5aa1d753ee64",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "7af5e18169577e03b9c6874d50e557b55f7b520c58fb131c8a73545d8ae46507",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "classify.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbtVY6UbVY6UnPSxGe3Je",
+      "rect": {
+        "x": 1547.984375,
+        "y": 529.984375,
+        "width": 82,
+        "height": 30,
+        "top": 529.984375,
+        "right": 1629.984375,
+        "bottom": 559.984375,
+        "left": 1547.984375
+      },
+      "sourceSvgSha256": "443a430fd5d896542030e35daa3b8f8596a289791669c940eb0eeaf26ce8cd88",
+      "sha256": "2e2b511b3be1884fb80f59c1ea3d181c2f1f9b3d1d4baf3991859538a0703923",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "762b576f8e3b485465c9da068243543eb78c31c03cc25fafca480c36072724cf",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "list.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbtVY6UbVY6UnPSllJ0Krh",
+      "rect": {
+        "x": 1556.984375,
+        "y": 465.984375,
+        "width": 74,
+        "height": 32,
+        "top": 465.984375,
+        "right": 1630.984375,
+        "bottom": 497.984375,
+        "left": 1556.984375
+      },
+      "sourceSvgSha256": "3d48e8450ee11331f79aad148ebd36feb5b0be7e81fd0b0272cb29151733cd3b",
+      "sha256": "02686e5bb1d5e0ec350ba26b92925ce9319a179e1f3059856f4a520eafc8b140",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "5e592a732449f340bca743fe7f9420743420e550059afbda677ff2430e8af8fb",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "grid.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wbtVY6UbVY6UnPS6EIXnVT",
+      "rect": {
+        "x": 1630.984375,
+        "y": 465.984375,
+        "width": 74,
+        "height": 32,
+        "top": 465.984375,
+        "right": 1704.984375,
+        "bottom": 497.984375,
+        "left": 1630.984375
+      },
+      "sourceSvgSha256": "a2086ca4aacef18b5d32d876db27f997889d48afe3823c94ec9882096ceb6755",
+      "sha256": "f74be34cdb9ccbc8f67d5c892af31327d1a986322bc2746ca5763412937a9c3d",
+      "treatment": "original SVG geometry; inherited computed fill/stroke made standalone",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ],
+      "drawingGeometrySha256": "711df5226293c1d1afa09f9a13136dae45a835dfb8065c0906df3e75830ef195",
+      "drawingGeometryUnchanged": true
+    },
+    {
+      "file": "blue-background.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wrbgVY6UVY6UnPSoUygUb1",
+      "rect": {
+        "x": 771.984375,
+        "y": 209,
+        "width": 305.328125,
+        "height": 112,
+        "top": 209,
+        "right": 1077.3125,
+        "bottom": 321,
+        "left": 771.984375
+      },
+      "sha256": "9f65ba24ecce61f2f9e4c87fa45f503cdac712f84bb64c8f5f10c8eb70f18449",
+      "treatment": "unchanged decoded embedded SVG background",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ]
+    },
+    {
+      "file": "purple-background.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wrbgVY6UVY6UnPSkMKG3fl",
+      "rect": {
+        "x": 1095.3125,
+        "y": 209,
+        "width": 305.328125,
+        "height": 112,
+        "top": 209,
+        "right": 1400.640625,
+        "bottom": 321,
+        "left": 1095.3125
+      },
+      "sha256": "cf5f0b4275c00fd53fc1a74b87844d5a78564005584214f559f24fc615b5ba1e",
+      "treatment": "unchanged decoded embedded SVG background",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ]
+    },
+    {
+      "file": "green-background.svg",
+      "cid": "/wbVY6UbmVY6UkhBpWRmU35/wrbgVY6UVY6UnPSkaC3Ta8",
+      "rect": {
+        "x": 1418.640625,
+        "y": 209,
+        "width": 305.328125,
+        "height": 112,
+        "top": 209,
+        "right": 1723.96875,
+        "bottom": 321,
+        "left": 1418.640625
+      },
+      "sha256": "a3cd5243b11ebac7c3d6dece8da285427e3e4e1199e457f88116680368a4ac82",
+      "treatment": "unchanged decoded embedded SVG background",
+      "zipEntriesContainingWidgetId": [
+        "pm2mv9dlt722tkxks-mvak915c/extra/data.1.js#gzip-decoded"
+      ]
+    }
+  ]
+}
