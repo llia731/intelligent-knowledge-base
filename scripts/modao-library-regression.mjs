@@ -190,7 +190,16 @@ try {
   });
   await run("unsupported-is-honest", async ({ p, r, go, shot, state }) => {
     await go("/library");
+    // SSR can render disabled controls before Zustand has initialized local persistence.
+    // Establish the baseline only after the real application state exists; keep the full equality assertion.
+    await p.waitForFunction(() =>
+      Array.isArray(JSON.parse(localStorage.getItem("zhishi-kb-v1"))?.state?.docs),
+    );
     const before = await state();
+    assert.ok(
+      before && Array.isArray(before.logs),
+      "Initialized persistence is required before observing no-op behavior",
+    );
     const requests = [];
     p.on("request", (q) => {
       if (["POST", "PUT", "PATCH", "DELETE"].includes(q.method())) requests.push(q.url());
