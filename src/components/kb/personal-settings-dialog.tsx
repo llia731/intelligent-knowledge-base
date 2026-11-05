@@ -13,9 +13,8 @@ import {
   Inbox,
   Mail,
   Smartphone,
-  MessagesSquare,
 } from "lucide-react";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode, type SVGProps } from "react";
 import { ACCESS_ROLES, type AccessRole } from "@/lib/kb/access";
 import { DEFAULT_PERSONAL_PREFERENCES, useKb } from "@/lib/kb/store";
 import type { PersonalPreferences } from "@/lib/kb/types";
@@ -34,6 +33,25 @@ const AVATARS = [
   { key: "graduation-cap", icon: GraduationCap, label: "学术" },
   { key: "smile", icon: Smile, label: "微笑" },
 ] as const;
+
+// Exact V16 icon geometry from the supplied prototype's WeCom channel widget.
+function WecomIcon({ size = 16, ...props }: SVGProps<SVGSVGElement> & { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+    </svg>
+  );
+}
 
 function Selection({
   value,
@@ -236,7 +254,7 @@ export function PersonalSettingsDialog({
                           className={draft.avatar === item.key ? "ps-avatar active" : "ps-avatar"}
                           onClick={() => patch({ avatar: item.key })}
                         >
-                          <Icon size={22} />
+                          <Icon size={24} />
                         </button>
                       );
                     })}
@@ -370,7 +388,7 @@ export function PersonalSettingsDialog({
                         ["inbox", "站内信", Inbox],
                         ["email", "邮件", Mail],
                         ["sms", "短信", Smartphone],
-                        ["wecom", "企业微信", MessagesSquare],
+                        ["wecom", "企业微信", WecomIcon],
                       ] as const
                     ).map(([key, label, Icon]) => (
                       <label className="ps-check" key={key}>

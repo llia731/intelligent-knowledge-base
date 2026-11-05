@@ -446,6 +446,34 @@ try {
       await save(p);
     }
   });
+  await run("select-mouse-options", async ({ p, r, shot, go }) => {
+    await go("/");
+    await open(p);
+    await tab(p, "检索偏好");
+    r.observations.customizableSelect = await p.evaluate(() =>
+      CSS.supports("appearance", "base-select"),
+    );
+    for (const [label, option, value, id] of [
+      ["默认检索模式", "关键词检索", "keyword", "mode"],
+      ["默认排序", "更新时间", "updated", "sort"],
+      ["默认每页条数", "50 条", "50", "page-size"],
+    ]) {
+      const control = p.getByLabel(label, { exact: true });
+      await control.click();
+      await p.getByRole("option", { name: option, exact: true }).waitFor();
+      await shot(id + "-open");
+      await p.getByRole("option", { name: option, exact: true }).click();
+      assert.equal(await control.inputValue(), value);
+    }
+    await save(p);
+    await p.reload({ waitUntil: "networkidle" });
+    await open(p);
+    await tab(p, "检索偏好");
+    assert.equal(await p.getByLabel("默认检索模式", { exact: true }).inputValue(), "keyword");
+    assert.equal(await p.getByLabel("默认排序", { exact: true }).inputValue(), "updated");
+    assert.equal(await p.getByLabel("默认每页条数", { exact: true }).inputValue(), "50");
+    await shot("restored");
+  });
 } finally {
   await b.close();
 }
