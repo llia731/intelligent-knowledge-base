@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Building2, Check, Copy, KeyRound, Link2, MessageSquare, Users, UserRound, X } from "lucide-react";
 import type { KbDoc } from "@/lib/kb/types";
 import { useKb } from "@/lib/kb/store";
@@ -32,10 +32,8 @@ export function ShareDocumentDialog({doc, open, onOpenChange}:{
   const [summary,setSummary]=useState("");
   const [savedNote,setSavedNote]=useState(false);
   const [message,setMessage]=useState("");
-  const previousDocId=useRef<string | null>(null);
   useEffect(()=>{
     if (!open || !doc) return;
-    if(previousDocId.current!==doc.id) previousDocId.current=doc.id;
     setEnabled(false);
     setScope("organization");
     setDepartment("产品研发部");
@@ -66,7 +64,7 @@ export function ShareDocumentDialog({doc, open, onOpenChange}:{
           <Dialog.Close className="sd-close" aria-label="关闭分享"><X size={18}/></Dialog.Close>
         </header>
         <div className="sd-body">
-          <p id="sd-desc" className="sd-doc-title" title={doc?.title}>当前文档：{doc?.title}</p>
+          <p id="sd-desc" className="sr-only">为当前文档配置分享选项。尚未接入真实链接分享服务。</p>
           <label className="sd-enable">
             <span><strong>开启链接分享</strong><small>关闭后，已生成的分享链接将失效</small></span>
             <input aria-label="开启链接分享" type="checkbox" role="switch" checked={enabled}
@@ -90,8 +88,6 @@ export function ShareDocumentDialog({doc, open, onOpenChange}:{
             <select className="sd-input" value={department} onChange={e=>setDepartment(e.target.value)}
               aria-label="指定部门" disabled={scope!=="departments"}>
               <option value="产品研发部">产品研发部</option>
-              <option value="内容运营部">内容运营部</option>
-              <option value="平台管理部">平台管理部</option>
             </select>
           </label>
           <div className="sd-cols">
