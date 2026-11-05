@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Real Modao /library capture and inline SVG extraction; reuse existing local servers. */
+/** Real Modao /search capture and inline SVG extraction; reuse existing local servers. */
 import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -181,9 +181,27 @@ for (const kind of ["source", "react"].filter((k) => mode === "both" || mode ===
     await p.evaluate(() => document.fonts.ready);
     await p.screenshot({ path: path.join(out, kind + ".png"), caret: "initial" });
     if (kind === "source") {
+      const clipping = await p.locator('#audit-search-host').evaluate(el => [...el.querySelectorAll('*')].filter(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>1200&&r.height>600&&[s.overflow,s.overflowX,s.overflowY].some(x=>['hidden','clip','auto','scroll'].includes(x))}).map(e=>({tag:e.tagName,cls:String(e.className),cid:e.getAttribute('data-cid'),rect:e.getBoundingClientRect().toJSON(),overflow:getComputedStyle(e).overflow,html:e.outerHTML.slice(0,300)})));
+      await fs.writeFile(path.join(out,'clipping-probe.json'),JSON.stringify(clipping,null,2));
       await p.evaluate(() => {
         const host = document.querySelector("#audit-search-host"),
           copy = host.firstElementChild;
+        // Supplemental canvas: reveal only large runtime clipping containers.
+        // Widget dimensions and coordinates must remain unchanged.
+        const nodes = [...host.querySelectorAll('[data-cid]')];
+        const before = nodes.map(e => e.getBoundingClientRect().toJSON());
+        const adjusted = [];
+        for (const e of host.querySelectorAll('*')) {
+          const rect = e.getBoundingClientRect(), style = getComputedStyle(e);
+          if (rect.width >= 1280 && rect.height >= 990 &&
+              [style.overflowX, style.overflowY].some(v => ['hidden','clip','auto','scroll'].includes(v))) {
+            adjusted.push({className:String(e.className),cid:e.getAttribute('data-cid'),rect:rect.toJSON(),overflow:style.overflow});
+            e.style.setProperty('overflow','visible','important');
+          }
+        }
+        const after = nodes.map(e => e.getBoundingClientRect().toJSON());
+        if (JSON.stringify(before) !== JSON.stringify(after)) throw Error('Overflow capture changed widget geometry');
+        window.__sourceOverflowAudit = {adjusted,widgetCount:nodes.length,widgetGeometryUnchanged:true,viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},note:'Supplemental unclipped source DOM canvas; original 1920x1080 frames were saved before these capture-only changes.'};
         host.style.position = "absolute";
         host.style.height = "1324px";
         copy.style.height = "1324px";
@@ -191,6 +209,7 @@ for (const kind of ["source", "react"].filter((k) => mode === "both" || mode ===
         document.body.style.setProperty("overflow", "visible", "important");
         document.body.style.minHeight = "1324px";
       });
+      await fs.writeFile(path.join(out, 'source-overflow-audit.json'), JSON.stringify(await p.evaluate(() => window.__sourceOverflowAudit), null, 2));
       await p.screenshot({
         path: path.join(out, "source-full.png"),
         fullPage: true,
